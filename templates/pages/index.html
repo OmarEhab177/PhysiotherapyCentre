@@ -1,0 +1,143 @@
+            
+            
+{% extends 'base.html' %} 
+
+
+{% block content %}
+
+
+<div id="layoutSidenav">
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="main-content container-fluid px-4">
+                <h1 class="mt-4">Dashboard</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+                <div class="row">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card text-center bg-primary text-white mb-4">
+                            <div class="card-body">
+                                <i class="icon fa-solid fa-person-chalkboard"></i>
+                                <h2 class="mycard-title">05</h2>
+                            </div>
+                            <div class="card-footer">
+                                <h4 class="small text-white stretched-link">Free Teachers</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-warning text-center text-white mb-4">
+                            <div class="card-body">
+                                <i class="icon fa-solid fa-calendar-check"></i>
+                                <h2 class="mycard-title">200</h2>
+                            </div>
+                            <div class="card-footer">
+                                <h4 class="small text-white">Appointment</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-success text-center text-white mb-4">
+                            <div class="card-body">
+                                <i class="icon fa-solid fa-calendar-check"></i>
+                                <h2 class="mycard-title">200</h2>
+                            </div>
+                            <div class="card-footer">
+                                <h4 class="small text-white" >View Details</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card  text-center bg-danger text-white mb-4">
+                            <div class="card-body">
+                                <i class="icon fa-solid fa-calendar-check"></i>
+                                <h2 class="mycard-title">200</h2>
+                            </div>
+                            <div class="card-footer">
+                                <h4 class="small text-white">View Details</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        DataTable Example
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Section</th>
+                                    <th>Teacher</th>
+                                    <th>Age</th>
+                                    <th>Start date</th>
+                                    <th>Appointment</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Office</th>
+                                    <th>Age</th>
+                                    <th>Start date</th>
+                                    <th>Salary</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Tiger Nixon</td>
+                                    <td>System Architect</td>
+                                    <td>Tiger Nixon</td>
+                                    <td>61</td>
+                                    <td>2011/04/25</td>
+                                    <td>$320,800</td>
+                                </tr>
+                                <tr>
+                                    <td>Garrett Winters</td>
+                                    <td>Accountant</td>
+                                    <td>Tiger Nixon</td>
+                                    <td>63</td>
+                                    <td>2011/07/25</td>
+                                    <td>$170,750</td>
+                                </tr>
+                                <tr>
+                                    <td>Ashton Cox</td>
+                                    <td>Junior Technical Author</td>
+                                    <td>Tiger Nixon</td>
+                                    <td>66</td>
+                                    <td>2009/01/12</td>
+                                    <td>$86,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Cedric Kelly</td>
+                                    <td>Senior Javascript Developer</td>
+                                    <td>Tiger Nixon</td>
+                                    <td>22</td>
+                                    <td>2012/03/29</td>
+                                    <td>$433,060</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Kuwait Society for the Hondicapped 2022</div>
+                    <div>
+                        <a href="#">Created by Mamdouh</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+{% endblock %}

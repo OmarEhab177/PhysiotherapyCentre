@@ -1,0 +1,43 @@
+ 
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="main-content container-fluid px-4">
+            <h1 class="mt-4">New Therapist</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active"> new </li>
+            </ol>
+            <div class="innercontent">
+                <div class="row">
+                    <form class="row g-3" method="POST">
+                        {% csrf_token %}
+                     
+                        {{form}} 
+                        
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                          </div>  
+                    </form>
+                </div>
+            </div>
+          
+            </div>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Kuwait Society for the Hondicapped 2022</div>
+                        <div>
+                            <a href="#">Created by Jad</a>
+                        </div>
+                    </div>
+                </div>
+            </footer> 
+        </div>
+    </main>
+
+</div>
+
+{% endblock %}
