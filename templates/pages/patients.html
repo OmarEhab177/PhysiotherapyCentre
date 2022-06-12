@@ -59,6 +59,14 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="main-content container-fluid px-4">
+            <h1 class="mt-4">Welcom {{request.user}}</h1>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card text-center bg-primary text-white mb-4">
+                      
+                    </div>
+                </div>
+            </div>    
             <h1 class="mt-4">Patients</h1>
             <div class="d-flex flex-row-reverse m-2 p-2">
                 <button type="button" id="new_patient" class="btn btn-success m-1" data-togle="modal"
@@ -68,7 +76,7 @@
                 <button type="button" id="new_disability" class="btn btn-outline-info m-1" data-togle="modal"
                     data-target="#addDisability">Add Disability</button>
             </div>
-            <table class="table table-dark">
+            <table class="table table-gray" id="datatablesSimple" >
                 <thead>
                     <tr>
                         <th scope="col">Civil Id</th>
@@ -88,17 +96,6 @@
                     {% endfor %}
                 </tbody>
             </table>
-
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Kuwait Society for the Hondicapped 2022</div>
-                        <div>
-                            <a href="#">Created by Mamdouh</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
 
             <div class="modal fade" id="createPatient">
                 <div class="modal-dialog modal-dialog-centered" role="document">

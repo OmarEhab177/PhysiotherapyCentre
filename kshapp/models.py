@@ -1,6 +1,8 @@
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 
 class Disability(models.Model):
@@ -59,7 +61,7 @@ class Section(models.Model):
 
 
 class Therapist(models.Model):
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE,null=False, blank=False)
     therapist_name = models.CharField(max_length=200, null=False, blank=False)
     phone = models.CharField(max_length=200, null=False, blank=False)
     email = models.CharField(max_length=200, null=False, blank=False)
@@ -71,6 +73,12 @@ class Therapist(models.Model):
 
 
 class Appointment(models.Model):
+
+    Action = (
+        ('Pending', 'Pending'),
+        ('Done', 'Done'),
+
+    )    
 
     STATUS = (
         ('Attend', 'Attend'),
@@ -92,8 +100,10 @@ class Appointment(models.Model):
     time = models.CharField(max_length=200, null=True, blank=True, choices=Time,unique=True)
     patient_name = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False)
     therapist_name = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=False, blank=False)
+    service = models.ForeignKey (Section,on_delete=models.CASCADE, null=True, blank=True)
     note = models.CharField(max_length=200, null=False, blank=False)
     status = models.CharField(max_length=200, null=True, blank=True, choices=STATUS)
+    action = models.CharField(max_length=200, null=True, blank=True, choices=Action,default='Pending')
 
     def __str__(self):
         return str(self.patient_name)

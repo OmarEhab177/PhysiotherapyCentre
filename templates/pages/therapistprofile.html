@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="main-content container-fluid px-4">
+            
+            <h1 class="mt-4">Welcom {{request.user}}</h1>
+            
+            
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card text-center bg-primary text-white mb-4">
+                      
+                    </div>
+                </div>
+            </div>
+             
+          
+            
+
+
+            <div class="card mb-4" >
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    DataTable Example
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple"class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Patient Name </th>
+                                <th>thirapist</th>
+                                <th> Service</th>
+                                <th>Note</th>
+                                <th>STATUS</th>
+                                <th></th>
+                                
+                        
+                            </tr>
+                        </thead>
+                       
+                        <tbody>
+                            
+                           
+                            
+                                <tr>
+                                    <td>22-8-2020</td>
+                                    <td>8:00</td>
+                                    <td>Aroun</td>
+                                    <td>Dr Asmaa</td>
+                                 
+                                    <td>Sinsory</td>
+                                    <td><div class="input-group mb-6">
+                                        <input type="text" class="form-control" >
+                                       
+                                      </div></td>
+                                    
+                                    <td><select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                        <option selected>Attend</option>
+                                    </select></td>
+                                    
+                                    <td><button class="btn btn-primary" type="button" id="button-addon2">Save</button></td>
+                           
+                         </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+   
+</div>
+
+
+   
+
+ {% endblock %}           

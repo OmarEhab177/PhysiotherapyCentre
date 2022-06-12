@@ -1,29 +1,39 @@
-<div id="layoutSidenav_nav">
-    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-        <div class="sb-sidenav-menu">
-            <div class="nav ">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'kshapp:home'%}"> <i class="fa-solid fa-gauge"></i> &nbsp; Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'kshapp:new-patient'%}"><i class="fa-solid fa-graduation-cap"></i> &nbsp; New</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'kshapp:therapist'%}"><i class="fa-solid fa-person-chalkboard"></i> &nbsp; therapist</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'kshapp:section'%}"> <i class="fa-solid fa-puzzle-piece"></i> &nbsp; Sections</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'kshapp:appointment'%}"><i class="ml-2 fas fa-table"> </i> &nbsp; Appointment</a>
-                    </li>
-                </ul>
+
+{% load static %}
+
+
+
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav ">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="{% url 'kshapp:home'%}"> <i class="fa-solid fa-gauge"></i> &nbsp; Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'kshapp:patients'%}"><i class="fa-solid fa-graduation-cap"></i> &nbsp; Patients</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'kshapp:therapist'%}"><i class="fa-solid fa-person-chalkboard"></i> &nbsp; Add therapist</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'kshapp:section'%}"> <i class="fa-solid fa-puzzle-piece"></i> &nbsp; Sections</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'kshapp:appointment'%}"><i class="ml-2 fas fa-table"> </i> &nbsp; Appointments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="therapistprofile.html"><i class="ml-2 fas fa-table"> </i> &nbsp; Therapist profile</a>
+                        </li>
+                      </ul>
+                </div>
             </div>
-        </div>
-        <div class="sb-sidenav-footer">
-            <div class="small">Logged in as:</div>
-            User Name
-        </div>
-    </nav>
-</div>
+            <div class="sb-sidenav-footer">
+                <div class="small">Logged in as:</div>
+                User Name
+            </div>
+        </nav>
+    </div>
+    
