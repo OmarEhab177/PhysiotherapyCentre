@@ -165,14 +165,9 @@ def logoutuser(request) :
 
 @login_required(login_url = 'login')
 def therapistprofile(request):
-  
-
     context = {
-
         'appoint':appointment_models.objects.all(),
-        
         }
-
     return render(request, 'pages/therapistprofile.html', context,)
 
 
