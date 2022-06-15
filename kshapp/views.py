@@ -155,7 +155,6 @@ def appointment(request) :
     context = {
         'appoint_form':appointform(),
     }
-
     return render(request, 'pages/appointment.html',context)
 
 
