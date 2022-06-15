@@ -10,7 +10,7 @@
  
                     
                                     <form method="GET">
-                                        {% csrf_token %}
+                                      {% csrf_token %}
                                         <script>
                                             {% if messages %}
                                                 {% for message in messages %}
@@ -46,8 +46,8 @@
                                           <br>
                                           <br>
                                           <br>
-                                        <form>
-                                      
+                                        <form method="POST">
+                                          {% csrf_token %}
                                         <div id="logo1" class = "container" class="jumbotron text-center" class=" bg-light form-floating mb-3">
 
                                             <input class="form-control" name="username" placeholder="username" />

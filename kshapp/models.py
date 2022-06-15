@@ -97,13 +97,20 @@ class Appointment(models.Model):
     )
 
     date = models.DateField(null=True, blank=True) 
-    time = models.CharField(max_length=200, null=True, blank=True, choices=Time,unique=True)
+    time = models.CharField(max_length=200, null=True, blank=True, choices=Time)
     patient_name = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False)
     therapist_name = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=False, blank=False)
     service = models.ForeignKey (Section,on_delete=models.CASCADE, null=True, blank=True)
     note = models.CharField(max_length=200, null=False, blank=False)
     status = models.CharField(max_length=200, null=True, blank=True, choices=STATUS)
     action = models.CharField(max_length=200, null=True, blank=True, choices=Action,default='Pending')
+
+
+
+    class Meta:
+            unique_together = ['date','time','therapist_name','patient_name']
+
+
 
     def __str__(self):
         return str(self.patient_name)

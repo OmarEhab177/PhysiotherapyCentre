@@ -10,57 +10,38 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .directors import *
 from .directors import unauthenticated_user,allowed_users
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.conf import settings
+from .models import Appointment as appointment_models
 
 
-
-
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
+#index def 
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['admin'])
 def index(request) :
     return render(request, 'pages/index.html')
 
+
 #login def 
-
-
-# @unauthenticated_user
+@unauthenticated_user
 def loginpage(request) :
-
-   
     if request.method == 'GET':
         username =  request.GET.get('username')
         password =  request.GET.get('password')
         user = authenticate(request,username=username, password=password)
-
         if user is not  None:
             login(request, user)
-            return redirect('therapistprofile.html')
+            return redirect('therapistprofile')
         else:
-            messages.info(request, "حاول مرة أخري")
-        
+            messages.info(request, "Login again")
     context = {}
-
     return render(request, 'pages/login.html',context)
 
 
-
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
-def new(request) :
-    if request.method == 'POST':
-        add_pat = newform(request.POST)
-        add_pat.save()
-            
-    context = {
-        'form':newform(),
-    }
-    return render(request, 'pages/new.html', context)
-
-
-
-
-
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
+# patients def 
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['admin'])
 def patients(request):
     patients = Patient.objects.all()
     patient_form = PatientForm()
@@ -76,8 +57,8 @@ def patients(request):
     template = 'pages/patients.html'
     return render(request, template, context)
 
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['admin'])
 def new_patient(request):
     p_type = request.POST.get('patient_type')
     t_disability = request.POST.get('type_disability')
@@ -103,8 +84,8 @@ def new_patient(request):
     return HttpResponseRedirect('patients')
 
 
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['admin'])
 def new_patient_type(request):
     p_type = PatientTypeForm(request.POST)
     if p_type.is_valid():
@@ -115,8 +96,8 @@ def new_patient_type(request):
     return HttpResponseRedirect('patients')
 
 
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['admin'])
 def new_disability(request):
     dis_form = DisabilityForm(request.POST)
     if dis_form.is_valid():
@@ -127,14 +108,26 @@ def new_disability(request):
     return HttpResponseRedirect('patients')
 
 
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['admin'])
 def section(request) :
-    return render(request, 'pages/newsections.html')
+    add_sec = sectionform(request.POST)
+    if add_sec.is_valid():
+        add_sec.save()
+        messages.add_message(request, messages.INFO, 'Section created successfully.')
+    else:
+        messages.add_message(request, messages.INFO, 'Error while creating Section.')
+    
+    context = {
+        'sec_form':sectionform(),
+    }
+
+    
+    return render(request, 'pages/sections.html',context)
 
 
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['admin'])
 def therapist(request) :
     if request.method == 'POST':
         add_thr = teacherform(request.POST)
@@ -144,19 +137,43 @@ def therapist(request) :
         'form':teacherform(),
         
     }
-    return render(request, 'pages/newtherapist.html',context)
+    return render(request, 'pages/therapist.html',context)
 
 
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url = 'login')
+@allowed_users(allowed_roles=['admin'])
 def appointment(request) :
-    return render(request, 'pages/newappointment.html')
+    add_appoint = appointform(request.POST)
+    if add_appoint.is_valid():
+       add_appoint.save()
+       messages.add_message(request, messages.INFO, 'Appointment created successfully.')
+    else:
+        messages.add_message(request, messages.INFO, 'Error while creating Appointment.')
+       # return HttpResponseRedirect('pages/appointment.html')
+
+    
+    context = {
+        'appoint_form':appointform(),
+    }
+
+    return render(request, 'pages/appointment.html',context)
 
 
 def logoutuser(request) :
     logout(request) 
-    return redirect('login')
+    return redirect('pages/login.html')
 
-# @login_required(login_url = 'login')
-def therapistprofile(request) :
-    return render(request, 'pages/therapistprofile.html')
+@login_required(login_url = 'login')
+def therapistprofile(request):
+  
+
+    context = {
+
+        'appoint':appointment_models.objects.all(),
+        
+        }
+
+    return render(request, 'pages/therapistprofile.html', context,)
+
+
+

@@ -11,72 +11,25 @@
             </ol>
             <div class="innercontent">
                 <div class="row">
-                    <form class="row g-3">
-                        <div class="row">
-                            <div class="col">
-                                <label for="Date" class="form-label">Name</label>
-                              <input type="text" class="form-control" placeholder="Name" aria-label="Name">
-                            </div>
-                            <div class="col">
-                                <label for="Date" class="form-label">Date</label>
-                                <input type="date" class="form-control" id="Date" placeholder="1234 Main St">
-                            </div>
-                            
-                        </div>
-                        <div class="col-12">
-                          <label for="Birthday" class="form-label">Time</label>
-                          <input type="time" class="form-control" id="mytime">
-                        </div>
-                        <div class="col-12">
-                            <label for="Birthday" class="form-label">Recuring</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                  Week
-                                </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                  Month
-                                </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                  Year
-                                </label>
-                              </div>
-                              
-                        </div>
-                        <div class="col">
-                            <label for="inputTeacher" class="form-label">Teacher</label>
-                            <select id="inputTeacher" class="form-select">
-                              <option selected>Choose...</option>
-                              <option>...</option>
-                            </select>
-                          </div>
-                          <div class="col">
-                              <label for="inputTeacher" class="form-label">Section</label>
-                              <select id="inputTeacher" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                              </select>
-                            </div>
-                            <div class="col">
-                              <label for="Date" class="form-label">Note</label>
-                            <input type="text" class="form-control" placeholder="Note" aria-label="Name">
-                          </div>
-                          
-                            
-                          <div class="col-12">
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" id="gridCheck">
-                              <label class="form-check-label" for="gridCheck">
-                                Check me out
-                              </label>
-                            </div>
-                          </div>
+                    <form class="row g-3" method="POST">
+                    
+                     
+
+                      {% csrf_token %}
+                   <script>
+                    {% if messages %}
+                        {% for message in messages %}
+                            alert('{{message}}')
+                        {% endfor %}
+                    {% endif %}
+                </script>
+
+
+                      {{appoint_form}}
+                  
+                           
+
+
                           <div class="col-12">
                             <button type="submit" class="btn btn-primary">Save</button>
                           </div>
