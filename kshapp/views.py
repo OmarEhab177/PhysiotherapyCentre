@@ -3,16 +3,11 @@ from django.http import  HttpResponseRedirect
 from .models import *
 from .forms import *
 from django.contrib import messages
-#import 
 from django.contrib.auth import authenticate, login, logout 
 from django.shortcuts import redirect
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .directors import *
 from .directors import unauthenticated_user,allowed_users
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.conf import settings
 from .models import Appointment as appointment_models
 
 
@@ -56,6 +51,7 @@ def patients(request):
     }
     template = 'pages/patients.html'
     return render(request, template, context)
+
 
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles=['admin'])
@@ -111,18 +107,15 @@ def new_disability(request):
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles=['admin'])
 def section(request) :
-    add_sec = sectionform(request.POST)
+    add_sec = SectionForm(request.POST)
     if add_sec.is_valid():
         add_sec.save()
         messages.add_message(request, messages.INFO, 'Section created successfully.')
     else:
         messages.add_message(request, messages.INFO, 'Error while creating Section.')
-    
     context = {
-        'sec_form':sectionform(),
+        'sec_form': SectionForm(),
     }
-
-    
     return render(request, 'pages/sections.html',context)
 
 
@@ -135,7 +128,6 @@ def therapist(request) :
             add_thr.save()
     context = {
         'form':teacherform(),
-        
     }
     return render(request, 'pages/therapist.html',context)
 
@@ -143,17 +135,15 @@ def therapist(request) :
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles=['admin'])
 def appointment(request) :
-    add_appoint = appointform(request.POST)
+    add_appoint = AppointForm(request.POST)
     if add_appoint.is_valid():
        add_appoint.save()
        messages.add_message(request, messages.INFO, 'Appointment created successfully.')
     else:
         messages.add_message(request, messages.INFO, 'Error while creating Appointment.')
        # return HttpResponseRedirect('pages/appointment.html')
-
-    
     context = {
-        'appoint_form':appointform(),
+        'appoint_form':AppointForm(),
     }
     return render(request, 'pages/appointment.html',context)
 
@@ -162,12 +152,10 @@ def logoutuser(request) :
     logout(request) 
     return redirect('pages/login.html')
 
+
 @login_required(login_url = 'login')
 def therapistprofile(request):
     context = {
         'appoint':appointment_models.objects.all(),
         }
     return render(request, 'pages/therapistprofile.html', context,)
-
-
-

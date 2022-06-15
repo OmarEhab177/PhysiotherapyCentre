@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
@@ -12,30 +11,19 @@
             <div class="innercontent">
                 <div class="row">
                     <form class="row g-3" method="POST">
-                    
-                     
-
-                      {% csrf_token %}
-                   <script>
-                    {% if messages %}
-                        {% for message in messages %}
-                            alert('{{message}}')
-                        {% endfor %}
-                    {% endif %}
-                </script>
-
-
-                      {{appoint_form}}
-                  
-                           
-
-
-                          <div class="col-12">
+                        {% csrf_token %}
+                        <script>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    alert('{{message}}')
+                                {% endfor %}
+                            {% endif %}
+                        </script>
+                        {{appoint_form}}
+                        <div class="col-12">
                             <button type="submit" class="btn btn-primary">Save</button>
-                          </div>
-                        
-                        
-                      </form>
+                        </div>
+                    </form>
                 </div>
             </div>
             </div>
@@ -51,8 +39,5 @@
           </footer>
         </div>
     </main>
-
 </div>
-
 {% endblock %}
-

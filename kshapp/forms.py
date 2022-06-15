@@ -38,13 +38,13 @@ class DisabilityForm(forms.ModelForm):
             'note': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-class sectionform(forms.ModelForm):
+class SectionForm(forms.ModelForm):
     class Meta:
         model = Section
         fields = '__all__'
 
 
-class appointform(forms.ModelForm):
+class AppointForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = '__all__'
