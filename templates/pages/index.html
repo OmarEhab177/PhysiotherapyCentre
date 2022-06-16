@@ -27,8 +27,8 @@
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-warning text-center text-white mb-4">
                         <div class="card-body">
-                            <i class="icon fa-solid fa-calendar-check"></i>
-                            <h2 class="mycard-title">200</h2>
+                            <i class="spinner-border text-white"></i>
+                            <h2 class="mycard-title">{{allapointment}}</h2>
                         </div>
                         <div class="card-footer">
                             <h4 class="small text-white">Appointment</h4>
@@ -39,21 +39,21 @@
                     <div class="card bg-success text-center text-white mb-4">
                         <div class="card-body">
                             <i class="icon fa-solid fa-calendar-check"></i>
-                            <h2 class="mycard-title">200</h2>
+                            <h2 class="mycard-title">{{alldone}}</h2>
                         </div>
                         <div class="card-footer">
-                            <h4 class="small text-white" >View Details</h4>
+                            <h4 class="small text-white" >Done</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card  text-center bg-danger text-white mb-4">
                         <div class="card-body">
-                            <i class="icon fa-solid fa-calendar-check"></i>
-                            <h2 class="mycard-title">200</h2>
+                            <i class="spinner-grow text-light"></i>
+                            <h2 class="mycard-title">{{allpending}}</h2>
                         </div>
                         <div class="card-footer">
-                            <h4 class="small text-white">View Details</h4>
+                            <h4 class="small text-white">Pending</h4>
                         </div>
                     </div>
                 </div>
@@ -68,35 +68,30 @@
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Section</th>
-                                <th>Teacher</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Appointment</th>
+                                <th>date</th>
+                                <th>time</th>
+                                <th>patient</th>
+                                <th>therapist</th>
+                                <th>Service</th>
+                                <th>Status</th>
+                                <th>Update</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                        </tfoot>
+                      
                         <tbody>
+                            {% for appoin in pro %}
                             <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Tiger Nixon</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
+                                <td>{{appoin.date}}</td>
+                                <td>{{appoin.time}}</td>
+                                <td>{{appoin.patient_name}}</td>
+                                <td>{{appoin.therapist_name}}</td>
+                                <td>{{appoin.action}}</td>
+                                <td>{{appoin.status}}</td>
+                                <td><a class="dropdown-item" href="#">Edit</a></td>
                             </tr>
-                          
+                            {% endfor %}
                         </tbody>
+
                     </table>
                 </div>
             </div>

@@ -101,16 +101,16 @@ class Appointment(models.Model):
     patient_name = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False)
     therapist_name = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=False, blank=False)
     service = models.ForeignKey (Section,on_delete=models.CASCADE, null=True, blank=True)
-    note = models.CharField(max_length=200, null=False, blank=False)
+    note = models.CharField(max_length=200, null=True, blank=True)
     status = models.CharField(max_length=200, null=True, blank=True, choices=STATUS)
     action = models.CharField(max_length=200, null=True, blank=True, choices=Action,default='Pending')
 
 
 
     class Meta:
-            unique_together = ['date','time','therapist_name','patient_name']
+             unique_together = ['date','time','therapist_name','patient_name']
 
 
 
     def __str__(self):
-        return str(self.patient_name)
+             return str(self.therapist_name)

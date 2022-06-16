@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 from django.http import  HttpResponseRedirect
 from .models import *
 from .forms import *
@@ -15,23 +16,36 @@ from .models import Appointment as appointment_models
 @login_required(login_url = 'login')
 @allowed_users(allowed_roles=['admin'])
 def index(request) :
-    return render(request, 'pages/index.html')
+
+    context = {
+        'pro':appointment_models.objects.all(),
+        'allapointment':appointment_models.objects.all().count,
+        'allpending':appointment_models.objects.filter(status="pending").count,
+        'alldone':appointment_models.objects.filter(status="Done").count,
+        
+        }
+
+    return render(request, 'pages/index.html',context)
 
 
 #login def 
 @unauthenticated_user
 def loginpage(request) :
+   
     if request.method == 'GET':
         username =  request.GET.get('username')
         password =  request.GET.get('password')
         user = authenticate(request,username=username, password=password)
+
         if user is not  None:
             login(request, user)
-            return redirect('therapistprofile')
+            return redirect('thirapest.html')
         else:
             messages.info(request, "Login again")
+        
     context = {}
-    return render(request, 'pages/login.html',context)
+
+    return render(request,'pages/login.html',context)
 
 
 # patients def 
@@ -150,7 +164,7 @@ def appointment(request) :
 
 def logoutuser(request) :
     logout(request) 
-    return redirect('pages/login.html')
+    return redirect('kshapp:login')
 
 
 @login_required(login_url = 'login')
