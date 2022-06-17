@@ -11,6 +11,7 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('section', views.section, name='section'),
     path('new-patient', views.new_patient, name='new-patient'),
+    # path('edit-patient', views.edit_patient, name='edit-patient'),
     path('new-patient-type', views.new_patient_type, name='new-patient-type'),
     path('disability', views.new_disability, name='new-disability'),
     path('patients', views.patients, name='patients'),
