@@ -1,9 +1,5 @@
 from django.urls import path 
 from . import views
-from django.contrib.auth.views import LoginView
-from django.conf import settings
-from django.conf.urls.static import static
-
 
 app_name = 'kshapp'
 
@@ -22,5 +18,4 @@ urlpatterns = [
     path('therapistprofile', views.therapistprofile, name='therapistprofile'),
     path('login',views.loginpage, name='login'),
     path('logout',views.logoutuser, name='logout'),
-  
 ]
