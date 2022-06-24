@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="layoutSidenav_content">
+    <main>
+        <div class="main-content container-fluid px-4">
+            <h1 class="mt-4">Welcom {{request.user}}</h1>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card text-center bg-primary text-white mb-4">
+                      
+                    </div>
+                </div>
+            </div> 
+            <!-- TODO: create patient detail template here -->
+            <h5>Name: {{patient}}</h5>
+            <p>TODO: create patient detail profile here</p>
+        </div>
+    </main>
+</div>
+{% endblock %}

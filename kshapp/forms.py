@@ -17,7 +17,8 @@ class PatientForm(forms.ModelForm):
     class Meta:
         model = Patient
         fields = '__all__'
-        
+        exclude = ('created', )
+
 class PatientTypeForm(forms.ModelForm):
     class Meta:
         model = PatientType

@@ -76,32 +76,43 @@
                 <button type="button" id="new_disability" class="btn btn-outline-info m-1" data-togle="modal"
                     data-target="#addDisability">Add Disability</button>
             </div>
-            <table class="table table-gray" id="datatablesSimple" >
+            <br>
+            <hr>
+            <table class="table table-striped" >
                 <thead>
                     <tr>
                         <th scope="col">Civil Id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Birthdate</th>
                         <th scope="col">phone</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for patient in patients %}
                     <tr>
-                        <th scope="row">{{patient.civil_Id}}</th>
+                        <th scope="row"><a type="button" href="{% url 'kshapp:view-patient' patient.id %}" class="text-info text-decoration-none">{{patient.civil_Id}}</a></th>
                         <td>{{patient.name}}</td>
                         <td>{{patient.Date_Of_Birth}}</td>
                         <td>{{patient.phone}}</td>
+                        <td class="text-center row">
+                            <form id="csrf_patient_form">
+                                {% csrf_token %}
+                            </form>
+                            <button type="button" onclick="editPatient({{patient.id}})" class="btn btn-outline-success mx-2 col"><i class="fas fa-edit"></i> Edit</button>
+                            <!-- <button type="button" onclick="deletePatient({{patient.id}})" class="btn btn-danger mx-2 col"><i class="fas fa-trash-alt"></i> Delete</button> -->
+                            <button type="button" onclick="confirmPopup('Delete Patient', 'Are you sure you want to delete {{patient.name}}', 'danger', 'Delete', 'Cancel', 'deletePatient({{patient.id}})')" class="btn btn-danger mx-2 col"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
 
-            <div class="modal fade" id="createPatient">
+            <div id="createPatient" class="modal fade modal-all" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header border-bottom-0">
-                            <h5 class="modal-title" id="exampleModalLabel">Create Patient</h5>
+                            <h5 class="modal-title">Create Patient</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -174,11 +185,55 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="CreatePatientType" >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header border-bottom-0">
+                            <h5 class="modal-title">Create patient type</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="POST" action="{% url 'kshapp:new-patient-type' %}"  enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                            {{ p_type_form.as_p }}
+                            </div>
+                            <div class="modal-footer border-top-0 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalEditPatient" >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header border-bottom-0">
+                            <h5 class="modal-title">Edit Patient</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="editPatientForm" method="POST" action="{% url 'kshapp:edit-patient' %}"  enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" id="patientID" name="patientID" value="">
+                            <div id='edit_patient_body' class="modal-body">
+
+                            </div>
+                            <div class="modal-footer border-top-0 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="addDisability" >
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header border-bottom-0">
-                            <h5 class="modal-title" id="exampleModalLabel">Create patient type</h5>
+                            <h5 class="modal-title">Create Disability</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -188,7 +243,7 @@
                             <div class="modal-body">
                             {{ disability_form.as_p }}
                             </div>
-                            <div id="submit_create_patient" class="modal-footer border-top-0 d-flex justify-content-center">
+                            <div class="modal-footer border-top-0 d-flex justify-content-center">
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </form>
@@ -199,6 +254,7 @@
         </div>
     </main>
 </div>
+
 
 {% block afterload %}
 <script>
@@ -214,14 +270,73 @@
     })
     $('textarea').each(function(){
         $(this).addClass('form-control')
-    })
-
+    })  
     $('#new_patient_type').click(function(){
         $('#CreatePatientType').modal('show');
     })
     $('#new_disability').click(function(){
         $('#addDisability').modal('show');
     })
+</script>
+<script>
+    function deletePatient(patientID){
+        token = $("#csrf_patient_form").find('input[name=csrfmiddlewaretoken]').val()
+        $.post({
+            'url': '{% url "kshapp:delete-patient" %}',
+            'data': {
+                'csrfmiddlewaretoken': token,
+                'patientID': patientID,
+            },
+            'success': function (response) {
+                response = JSON.parse(response);
+                if (response.status == '1') {
+                    alertPopup(response.title, response.message, 'success', 'Close', 'window.location.reload();')
+                } else {
+                    alertPopup('Delete Patient', 'Failed to delete patient', 'danger', 'Close', 'window.location.reload();')
+                }
+            },
+            'error': function () {
+                alertPopup('Failed', "Server error", 'danger')
+            }
+        });
+    }
+    function editPatient(patientID){
+        token = $("#csrf_patient_form").find('input[name=csrfmiddlewaretoken]').val()
+        $.get({
+            'url': '{% url "kshapp:edit-patient" %}',
+            'data': {
+                'csrfmiddlewaretoken': token,
+                'patientID': patientID
+            },
+            'success': function (response) {
+                $('#edit_patient_body p').remove()
+                response = JSON.parse(response);
+                if (response.status == '1') {
+                    $('#modalEditPatient').modal('show');
+                    $.when($('#edit_patient_body').append(JSON.parse(response.data))).then(
+                        $('#modalEditPatient input').each(function(){
+                            $(this).addClass('form-control')
+                        }),
+                        $('#modalEditPatient select').each(function(){
+                            $(this).addClass('form-control')
+                        }),
+                        $('#modalEditPatient textarea').each(function(){
+                            $(this).addClass('form-control')
+                        }),
+                        $('#modalEditPatient #id_Date_Of_Birth').attr('type', 'date'),
+                        $('#editPatientForm input[name="patientID"]').val(patientID)
+                    )
+
+                } else {
+                    alertPopup('Fialed', 'Failed to get patient detail', 'danger')
+                }
+            },
+            'error': function () {
+                alert("Server Error");
+            }
+        })
+    }
+   
 </script>
 {% endblock afterload %}
 {% endblock %}
