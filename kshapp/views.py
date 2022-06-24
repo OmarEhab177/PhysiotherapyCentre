@@ -1,6 +1,7 @@
-from django.shortcuts import render
+import json
+from django.shortcuts import get_object_or_404, render
 from django.conf import settings
-from django.http import  HttpResponseRedirect
+from django.http import  HttpResponseRedirect, JsonResponse
 from .models import *
 from .forms import *
 from django.contrib import messages
@@ -24,6 +25,7 @@ def index(request) :
         'alldone':appointment_models.objects.filter(status="Done").count,
         
         }
+    return render(request, 'pages/index.html',context)  
 
 
 #login def 
@@ -91,6 +93,52 @@ def new_patient(request):
     messages.add_message(request, messages.INFO, 'Patient created successfully.')
     return HttpResponseRedirect('patients')
 
+
+def view_patient(request, pk):
+    patient = get_object_or_404(Patient, id=pk)
+    context = {
+        'patient': patient
+    }
+    template = 'pages/patient.html'
+    return render(request, template, context)
+
+
+def delete_patient(request):
+    patientID = request.POST['patientID']
+    patient = get_object_or_404(Patient, id=patientID)
+    patient.delete()
+    return HttpResponse(
+        json.dumps({
+            'status': '1',
+            'title': 'Delete Patient',
+            'message': 'Patient Deleted Succeessfully'
+        })
+    )
+
+
+def edit_patient(request):
+    if request.method == "POST":
+        patientID = request.POST.get('patientID')
+        patient = get_object_or_404(Patient, id=patientID)
+        edit_patient = PatientForm(request.POST, request.FILES, instance=patient)
+        if edit_patient.is_valid():
+            edit_patient.save()
+            messages.add_message(request, messages.INFO, 'Patient updated successfully.')
+            return HttpResponseRedirect('patients')
+        else:
+            messages.add_message(request, messages.INFO, 'Invalid data!')
+            return HttpResponseRedirect('patients')
+    else:
+        patientID = request.GET.get('patientID')
+        patient = get_object_or_404(Patient, id=patientID)
+        edit_patient_form = PatientForm(instance=patient)
+
+        return HttpResponse(
+            json.dumps({
+                'status': '1',
+                'data' : json.dumps(edit_patient_form.as_p())
+            })
+        )
 
 # @login_required(login_url = 'login')
 # @allowed_users(allowed_roles=['admin'])
