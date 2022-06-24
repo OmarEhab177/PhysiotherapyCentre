@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import get_object_or_404, render
 from django.conf import settings
-from django.http import  HttpResponseRedirect, JsonResponse
+from django.http import  HttpResponseRedirect
 from .models import *
 from .forms import *
 from django.contrib import messages
