@@ -16,6 +16,4 @@ urlpatterns = [
     path('therapist', views.therapist, name='therapist'),
     path('appointment', views.appointment, name='appointment'),
     path('therapistprofile', views.therapistprofile, name='therapistprofile'),
-    path('login',views.loginpage, name='login'),
-    path('logout',views.logoutuser, name='logout'),
 ]

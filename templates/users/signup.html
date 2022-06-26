@@ -1,0 +1,7 @@
+<h1>Sign up</h1>
+<p>TODO: create signup page to create accounts for therapist or manager</p>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Sign up</button>
+</form>
