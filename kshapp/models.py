@@ -1,10 +1,9 @@
 
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
-
-
+User = get_user_model()
 class Disability(models.Model):
 
     dis_type = models.CharField(max_length=200, null=False, blank=False)
