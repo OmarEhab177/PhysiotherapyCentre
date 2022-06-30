@@ -2,22 +2,12 @@ from django import forms
 from .models import *
 
 
-class teacherform(forms.ModelForm):
-    class Meta:
-        model = Therapist
-        fields = '__all__'
-  
-
-class newform(forms.ModelForm):
-    class Meta:
-        model = Patient
-        fields = '__all__'
-
 class PatientForm(forms.ModelForm):
     class Meta:
         model = Patient
         fields = '__all__'
         exclude = ('created', )
+
 
 class PatientTypeForm(forms.ModelForm):
     class Meta:
@@ -29,6 +19,7 @@ class PatientTypeForm(forms.ModelForm):
             'branch': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+
 class DisabilityForm(forms.ModelForm):
     class Meta:
         model = Disability
@@ -38,6 +29,7 @@ class DisabilityForm(forms.ModelForm):
             'dis_type': forms.TextInput(attrs={'class': 'form-control'}),
             'note': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
 
 class SectionForm(forms.ModelForm):
     class Meta:
