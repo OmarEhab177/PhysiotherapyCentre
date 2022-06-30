@@ -1,32 +1,27 @@
 import json
 from django.shortcuts import get_object_or_404, render
-from django.conf import settings
 from django.http import  HttpResponseRedirect
 from .models import *
 from .forms import *
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout 
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from .directors import *
-from .directors import unauthenticated_user, allowed_users
-from .models import Appointment as appointment_models
+from .directors import allowed_users
 
 
 @login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def index(request) :
     context = {
-        'pro':appointment_models.objects.all(),
-        'allapointment':appointment_models.objects.all().count,
-        'allpending':appointment_models.objects.filter(status="pending").count,
-        'alldone':appointment_models.objects.filter(status="Done").count,
+    #     'pro':appointment_models.objects.all(),
+    #     'allapointment':appointment_models.objects.all().count,
+    #     'allpending':appointment_models.objects.filter(status="pending").count,
+    #     'alldone':appointment_models.objects.filter(status="Done").count,
         
         }
     return render(request, 'pages/index.html',context)  
 
 
-# @login_required(login_url = 'login')
+@login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def patients(request):
     patients = Patient.objects.all()
@@ -44,7 +39,7 @@ def patients(request):
     return render(request, template, context)
 
 
-# @login_required(login_url = 'login')
+@login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def new_patient(request):
     p_type = request.POST.get('patient_type')
@@ -117,7 +112,7 @@ def edit_patient(request):
             })
         )
 
-# @login_required(login_url = 'login')
+@login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def new_patient_type(request):
     p_type = PatientTypeForm(request.POST)
@@ -129,7 +124,7 @@ def new_patient_type(request):
     return HttpResponseRedirect('patients')
 
 
-# @login_required(login_url = 'login')
+@login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def new_disability(request):
     dis_form = DisabilityForm(request.POST)
@@ -141,7 +136,7 @@ def new_disability(request):
     return HttpResponseRedirect('patients')
 
 
-# @login_required(login_url = 'login')
+@login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def section(request) :
     add_sec = SectionForm(request.POST)
@@ -155,39 +150,3 @@ def section(request) :
     }
     return render(request, 'pages/sections.html',context)
 
-
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
-def therapist(request) :
-    if request.method == 'POST':
-        add_thr = teacherform(request.POST)
-        if add_thr.is_valid():
-            add_thr.save()
-    context = {
-        'form':teacherform(),
-    }
-    return render(request, 'pages/therapist.html',context)
-
-
-# @login_required(login_url = 'login')
-# @allowed_users(allowed_roles=['admin'])
-def appointment(request) :
-    add_appoint = AppointForm(request.POST)
-    if add_appoint.is_valid():
-       add_appoint.save()
-       messages.add_message(request, messages.INFO, 'Appointment created successfully.')
-    else:
-        messages.add_message(request, messages.INFO, 'Error while creating Appointment.')
-       # return HttpResponseRedirect('pages/appointment.html')
-    context = {
-        'appoint_form':AppointForm(),
-    }
-    return render(request, 'pages/appointment.html',context)
-
-
-# @login_required(login_url = 'login')
-def therapistprofile(request):
-    context = {
-        'appoint':appointment_models.objects.all(),
-    }
-    return render(request, 'pages/therapistprofile.html', context,)
