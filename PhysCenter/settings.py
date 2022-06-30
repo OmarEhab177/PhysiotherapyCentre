@@ -128,3 +128,10 @@ MESSAGE_TAGS = {
     messages.INFO: '',
     50: 'critical',
 }
+
+
+
+#Media Files
+
+MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
+MEDIA_URL = '/media/'

@@ -14,20 +14,22 @@
             </ol>
             <div class="row">
                 <div class="col-xl-3 col-md-6">
-                    <div class="card text-center bg-primary text-white mb-4">
+                    <div class="card text-center bg-warning text-white mb-4">
                         <div class="card-body">
-                            <i class="icon fa-solid fa-person-chalkboard"></i>
-                            <h2 class="mycard-title">05</h2>
+                            <i class="icon fa-solid fas fa-user-alt-slash"></i>
+                            
+                            <h2 class="mycard-title">{{allabsent}}</h2>
                         </div>
                         <div class="card-footer">
-                            <h4 class="small text-white stretched-link">Free Teachers</h4>
+                            <h4 class="small text-white stretched-link">Absent</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-center text-white mb-4">
+                    <div class="card bg-info text-center text-white mb-4">
                         <div class="card-body">
-                            <i class="spinner-border text-white"></i>
+                            <i class="icon fa-solid fas fa-address-book"></i>
+                
                             <h2 class="mycard-title">{{allapointment}}</h2>
                         </div>
                         <div class="card-footer">
@@ -42,7 +44,7 @@
                             <h2 class="mycard-title">{{alldone}}</h2>
                         </div>
                         <div class="card-footer">
-                            <h4 class="small text-white" >Done</h4>
+                            <h4 class="small text-white" >Attend</h4>
                         </div>
                     </div>
                 </div>
@@ -50,7 +52,7 @@
                     <div class="card  text-center bg-danger text-white mb-4">
                         <div class="card-body">
                             <i class="spinner-grow text-light"></i>
-                            <h2 class="mycard-title">{{allpending}}</h2>
+                            <h2 class="mycard-title">{{allPending}}</h2>
                         </div>
                         <div class="card-footer">
                             <h4 class="small text-white">Pending</h4>
@@ -96,6 +98,8 @@
                 </div>
             </div>
         </div>
+
+        
     </main>
    
 </div>
