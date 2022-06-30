@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -39,9 +38,9 @@ class Patient(models.Model):
     email = models.CharField(max_length=200, null=False, blank=False)
     adress = models.TextField(null=False, blank=False)
     phone = models.CharField(max_length=50, null=False, blank=False)
-    photo = models.ImageField(upload_to='images', null=True, blank=True)
-    ID_photo = models.ImageField(upload_to='images', null=True, blank=True)
-    uplode = models.ImageField(upload_to='images', null=True, blank=True)
+    photo = models.ImageField(upload_to='images/patients', null=True, blank=True)
+    ID_photo = models.ImageField(upload_to='images/patients', null=True, blank=True)
+    uplode = models.ImageField(upload_to='images/patients', null=True, blank=True)
     gender = models.CharField(max_length=200, null=True, blank=True, choices=GENDER)
     nationality = models.CharField(max_length=200, null=False, blank=False)
     parents_contact = models.CharField(max_length=200, null=False, blank=False)
@@ -84,7 +83,7 @@ class Appointment(models.Model):
         ('Excuse of Child', 'Excuse of Child'),
         ('Excuse of therapist', 'Excuse of therapist'),
     )
-    
+
     Time = (
         ("8", "8"),
         ("9", "9"),
@@ -102,18 +101,10 @@ class Appointment(models.Model):
     note = models.CharField(max_length=200, null=True, blank=True)
     status = models.CharField(max_length=200, null=True, blank=True, choices=STATUS)
     action = models.CharField(max_length=200, null=True, blank=True, choices=Action,default='Pending')
+    therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=True, blank=True, related_name='appointments')
 
     class Meta:
-        unique_together = ('date', 'time', 'patient', )
-
+        unique_together = ('date', 'time', 'patient', 'therapist')
 
     def __str__(self):
         return str(self.patient)
-    
-
-class TherapistAppointment(models.Model):
-    therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE)
-    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    
-    class Meta:
-        unique_together = ('therapist', 'appointment', )
