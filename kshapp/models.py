@@ -1,8 +1,8 @@
 
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class Disability(models.Model):
@@ -60,16 +60,14 @@ class Section(models.Model):
         return self.section_service
 
 
-class Therapist(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,null=False, blank=False)
-    therapist_name = models.CharField(max_length=200, null=False, blank=False)
+class Therapist(User):
     phone = models.CharField(max_length=200, null=False, blank=False)
-    email = models.CharField(max_length=200, null=False, blank=False)
     adress = models.CharField(max_length=200, null=False, blank=False)
     sections = models.ForeignKey(Section, on_delete=models.CASCADE, null=False, blank=False)
-
+    avtar = models.ImageField(upload_to='images/therapist', blank=True)
+    
     def __str__(self):
-        return self.therapist_name
+        return self.name
 
 
 class Appointment(models.Model):
@@ -86,6 +84,7 @@ class Appointment(models.Model):
         ('Excuse of Child', 'Excuse of Child'),
         ('Excuse of therapist', 'Excuse of therapist'),
     )
+    
     Time = (
         ("8", "8"),
         ("9", "9"),
@@ -98,19 +97,23 @@ class Appointment(models.Model):
 
     date = models.DateField(null=True, blank=True) 
     time = models.CharField(max_length=200, null=True, blank=True, choices=Time)
-    patient_name = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False)
-    therapist_name = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=False, blank=False)
-    service = models.ForeignKey (Section,on_delete=models.CASCADE, null=True, blank=True)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False)
+    service = models.ForeignKey (Section, on_delete=models.CASCADE, null=True, blank=True)
     note = models.CharField(max_length=200, null=True, blank=True)
     status = models.CharField(max_length=200, null=True, blank=True, choices=STATUS)
     action = models.CharField(max_length=200, null=True, blank=True, choices=Action,default='Pending')
 
-
-
     class Meta:
-             unique_together = ['date','time','therapist_name','patient_name']
-
+        unique_together = ('date', 'time', 'patient', )
 
 
     def __str__(self):
-             return str(self.therapist_name)
+        return str(self.patient)
+    
+
+class TherapistAppointment(models.Model):
+    therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE)
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ('therapist', 'appointment', )

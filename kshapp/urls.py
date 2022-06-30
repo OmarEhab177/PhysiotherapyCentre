@@ -13,9 +13,5 @@ urlpatterns = [
     path('edit-patient', views.edit_patient, name='edit-patient'),
     path('new-patient-type', views.new_patient_type, name='new-patient-type'),
     path('disability', views.new_disability, name='new-disability'),
-    path('therapist', views.therapist, name='therapist'),
-    path('appointment', views.appointment, name='appointment'),
-    path('therapistprofile', views.therapistprofile, name='therapistprofile'),
-    path('login',views.loginpage, name='login'),
-    path('logout',views.logoutuser, name='logout'),
+
 ]
