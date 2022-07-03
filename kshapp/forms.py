@@ -41,3 +41,15 @@ class AppointForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = '__all__'
+        exclude = ('created', )
+    
+        widget = {
+            'date': forms.DateField (),
+            'time': forms.Select(attrs={'class': 'form-control'}),
+            'patient': forms.Select(attrs={'class': 'form-control'}),
+            'service': forms.Select(attrs={'class': 'form-control'}),
+            'note': forms.TextInput(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'action': forms.Select(attrs={'class': 'form-control'}),
+            'therapist': forms.Select(attrs={'class': 'form-control'}),
+        }

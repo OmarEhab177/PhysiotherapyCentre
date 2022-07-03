@@ -137,6 +137,27 @@ def new_disability(request):
 
 
 @login_required(login_url = 'accounts/login')
+def new_appointment(request):
+    appoint_form = AppointForm(request.POST)
+    if appoint_form.is_valid():
+        appoint_form.save()
+        messages.add_message(request, messages.INFO, 'Disability created successfully.')
+    else:
+        messages.add_message(request, messages.INFO, 'Error while creating Disability.')
+    return HttpResponseRedirect('appointments')
+
+
+@login_required(login_url = 'accounts/login')
+def appointments(request):
+    appointments = Appointment.objects.all()
+    print('appointments', appointments)
+    context = {
+        'appointments': appointments,
+    }
+    template = 'pages/appointments.html'
+    return render(request, template, context)
+
+@login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def section(request) :
     add_sec = SectionForm(request.POST)
