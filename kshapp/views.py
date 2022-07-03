@@ -150,12 +150,49 @@ def new_appointment(request):
 @login_required(login_url = 'accounts/login')
 def appointments(request):
     appointments = Appointment.objects.all()
-    print('appointments', appointments)
+    appoint_form = AppointForm()
     context = {
         'appointments': appointments,
+        'appoint_form': appoint_form,
     }
     template = 'pages/appointments.html'
     return render(request, template, context)
+
+def appointment_detail(request, pk):
+    appointment = get_object_or_404(Appointment, id=pk)
+    context = {
+        'appointment': appointment
+    }
+    template = 'pages/appointment.html'
+    return render(request, template, context)
+    
+
+
+def edit_appoint(request):
+    print('##############')
+    if request.method == "POST":
+        appointID = request.POST.get('appointID')
+        appoint = get_object_or_404(Appointment, id=appointID)
+        edit_appoint = AppointForm(request.POST, instance=appoint)
+        if edit_appoint.is_valid():
+            edit_appoint.save()
+            messages.add_message(request, messages.INFO, 'Appointment updated successfully.')
+            return HttpResponseRedirect('appointments')
+        else:
+            messages.add_message(request, messages.INFO, 'Invalid data!')
+            return HttpResponseRedirect('appointments')
+    else:
+        appointID = request.GET.get('appointID')
+        appoint = get_object_or_404(Appointment, id=appointID)
+        edit_appoint_form = AppointForm(instance=appoint)
+
+        return HttpResponse(
+            json.dumps({
+                'status': '1',
+                'data' : json.dumps(edit_appoint_form.as_p())
+            })
+        )
+ 
 
 @login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
