@@ -1,28 +1,152 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <div id="layoutSidenav_content">
     <main>
         <div class="main-content container-fluid px-4">
-            <h1 class="mt-4">New Section</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">New</li>
-            </ol>
-            <div class="innercontent">
-                <div class="row">
-                    <form class="row g-3" method="POST">
-                        {% csrf_token %}
-                        {{sec_form}}
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Save</button>
+            <h1 class="mt-4">Welcom 
+                {% if request.user.name %}{{request.user.name}}{% else %}{{request.user}}{%endif%}
+            </h1>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card text-center bg-primary text-white mb-4">
+                      
+                    </div>
+                </div>
+            </div> 
+        
+            <h1>Sections</h1>
+            <div class="d-flex flex-row-reverse m-2 p-2">
+                <button type="button" id="add_sec_btn" class="btn btn-success m-1" data-togle="modal"
+                    data-target="#addSection">New Section</button>
+            </div>
+            <table class="table table-striped" >
+                <thead>
+                    <tr>
+                        <th scope="col">Section service</th>
+                        <th scope="col">Main Section</th>
+                        <th scope="col">Note</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sec in sections %}
+                    <tr>
+                        <!-- TODO: redirect user to appointment page -->
+                        <th scope="row"><a type="button" href="{% url 'kshapp:section-detail' sec.id%}" class="text-info text-decoration-none">{{sec.section_service}}</a></th>
+                        <td>{{sec.main_section}}</td>
+                        <td>{{sec.note}}</td>
+                        <td class="text-center row">
+                            <form id="csrf_sec_form" class="d-none">
+                                {% csrf_token %}
+                            </form>
+                            <button type="button" data-secID="{{sec.id}}"  class="btn btn-outline-success mx-2 col edit_sec_btn"><i class="fas fa-edit"></i> Edit</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="modal fade" id="addSection" >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header border-bottom-0">
+                            <h5 class="modal-title">Create Section</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </form>
+                        <form method="POST" action="{% url 'kshapp:new-section' %}"  enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                            {{ sec_form.as_p }}
+                            </div>
+                            <div class="modal-footer border-top-0 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalEditSec" >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header border-bottom-0">
+                            <h5 class="modal-title">Edit Section</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="editSectionForm" method="POST" action="{% url 'kshapp:edit-section' %}"  enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" id="secID" name="secID" value="">
+                            <div id='edit_sec_body' class="modal-body">
+
+                            </div>
+                            <div class="modal-footer border-top-0 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-       
     </main>
 </div>
-
 {% endblock %}
+
+{% block afterload %}
+<script>
+$('#add_sec_btn').click(function(){
+    $('#addSection').modal('show');
+    $('#id_date').attr('type', 'date');
+    $('input').each(function(){
+        $(this).addClass('form-control')
+    })
+    $('select').each(function(){
+        $(this).addClass('form-control')
+    })
+})
+
+function editSection(patientID){
+    token = $("#csrf_appointment_form").find('input[name=csrfmiddlewaretoken]').val()
+    $.get({
+        'url': '{% url "kshapp:edit-section" %}',
+        'data': {
+            'csrfmiddlewaretoken': token,
+            'secID': secID
+        },
+        'success': function (response) {
+            $('#edit_sec_body p').remove()
+            response = JSON.parse(response);
+            if (response.status == '1') {
+                $('#modalEditSec').modal('show');
+                $.when($('#edit_sec_body').append(JSON.parse(response.data))).then(
+                    $('#modalEditSec input').each(function(){
+                        $(this).addClass('form-control')
+                    }),
+                    $('#modalEditSec select').each(function(){
+                        $(this).addClass('form-control')
+                    }),
+
+                    $('#editSectionForm input[name="secID"]').val(secID)
+                )
+
+            } else {
+                alertPopup('Fialed', 'Failed to get appointment detail', 'danger')
+            }
+        },
+        'error': function () {
+            alert("Server Error");
+        }
+    })
+}
+
+$('.edit_sec_btn').on('click', function(){
+    secID = $(this).attr('data-secID')
+    editSection(secID)
+})
+
+</script>
+{% endblock afterload %}

@@ -1,6 +1,7 @@
 import json
 from django.shortcuts import get_object_or_404, render
 from django.http import  HttpResponseRedirect, HttpResponse
+from django.views.generic.detail import DetailView
 from .models import *
 from .forms import *
 from django.contrib import messages
@@ -141,9 +142,9 @@ def new_appointment(request):
     appoint_form = AppointForm(request.POST)
     if appoint_form.is_valid():
         appoint_form.save()
-        messages.add_message(request, messages.INFO, 'Disability created successfully.')
+        messages.add_message(request, messages.INFO, 'Appointment created successfully.')
     else:
-        messages.add_message(request, messages.INFO, 'Error while creating Disability.')
+        messages.add_message(request, messages.INFO, 'Error while creating Appointment.')
     return HttpResponseRedirect('appointments')
 
 
@@ -191,19 +192,57 @@ def edit_appoint(request):
                 'data' : json.dumps(edit_appoint_form.as_p())
             })
         )
- 
+
+
+def sections(request):
+    sections = Section.objects.all()
+    sec_form = SectionForm()
+    context = {
+        'sections':sections,
+        'sec_form':sec_form,
+    }
+    template = 'pages/sections.html'
+    return render(request, template, context)
+
+
+class SectionView(DetailView):
+    template_name = 'pages/section.html'
+    model = Section
+
 
 @login_required(login_url = 'accounts/login')
-# @allowed_users(allowed_roles=['admin'])
-def section(request) :
+def new_section(request) :
     add_sec = SectionForm(request.POST)
     if add_sec.is_valid():
         add_sec.save()
-        messages.add_message(request, messages.INFO, 'Section created successfully.')
+        messages.add_message(request, messages.INFO, 'Sections created successfully.')
     else:
-        messages.add_message(request, messages.INFO, 'Error while creating Section.')
-    context = {
-        'sec_form': SectionForm(),
-    }
-    return render(request, 'pages/sections.html',context)
+        messages.add_message(request, messages.INFO, 'Error while creating Sections.')
+    return HttpResponseRedirect('sections')
 
+
+def edit_section(request):
+    if request.method == "POST":
+        print('POST')
+        secID = request.POST.get('secID')
+        sec = get_object_or_404(Section, id=secID)
+        edit_sec = SectionForm(request.POST, instance=sec)
+        if edit_sec.is_valid():
+            edit_sec.save()
+            messages.add_message(request, messages.INFO, 'Section updated successfully.')
+            return HttpResponseRedirect('sections')
+        else:
+            messages.add_message(request, messages.INFO, 'Invalid data!')
+            return HttpResponseRedirect('sections')
+    else:
+        print('GET')
+        secID = request.GET.get('secID')
+        sec = get_object_or_404(Section, id=secID)
+        edit_sec_form = SectionForm(instance=sec)
+
+        return HttpResponse(
+            json.dumps({
+                'status': '1',
+                'data' : json.dumps(edit_sec_form.as_p())
+            })
+        )

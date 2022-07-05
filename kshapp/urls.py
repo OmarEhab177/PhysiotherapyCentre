@@ -7,7 +7,10 @@ app_name = 'kshapp'
 
 urlpatterns = [
     path('', views.index, name='home'),
-    path('section', views.section, name='section'),
+    path('sections', views.sections, name='sections'),
+    path('new-section', views.new_section, name='new-section'),
+    path('section-detail/<int:pk>', views.SectionView.as_view(), name='section-detail'),
+    path('edit-section', views.edit_section, name='edit-section'),
     path('patients', views.patients, name='patients'),
     path('patients/patient/<int:pk>', views.view_patient, name='view-patient'),
     path('new-patient', views.new_patient, name='new-patient'),
