@@ -169,7 +169,6 @@ def appointment_detail(request, pk):
 
 
 def edit_appoint(request):
-    print('##############')
     if request.method == "POST":
         appointID = request.POST.get('appointID')
         appoint = get_object_or_404(Appointment, id=appointID)

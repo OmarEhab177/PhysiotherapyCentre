@@ -44,7 +44,7 @@
                             <form id="csrf_appointment_form" class="d-none">
                                 {% csrf_token %}
                             </form>
-                            <button type="button" id="edit_appointment_btn" data-appointID="{{appointment.id}}"  class="btn btn-outline-success mx-2 col"><i class="fas fa-edit"></i> Edit</button>
+                            <button type="button" data-appointID="{{appointment.id}}"  class="btn btn-outline-success mx-2 col edit_appointment_btn"><i class="fas fa-edit"></i> Edit</button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -151,7 +151,7 @@ function editAppointment(patientID){
     })
 }
 
-$('#edit_appointment_btn').on('click', function(){
+$('.edit_appointment_btn').on('click', function(){
     appointID = $(this).attr('data-appointID')
     editAppointment(appointID)
 })
