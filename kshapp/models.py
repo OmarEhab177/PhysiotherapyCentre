@@ -94,6 +94,7 @@ class Appointment(models.Model):
         ("2", "2"),
     )
 
+    created = models.DateTimeField(default=timezone.now)
     date = models.DateField(null=True, blank=True) 
     time = models.CharField(max_length=200, null=True, blank=True, choices=Time)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False)
@@ -101,7 +102,7 @@ class Appointment(models.Model):
     note = models.CharField(max_length=200, null=True, blank=True)
     status = models.CharField(max_length=200, null=True, blank=True, choices=STATUS)
     action = models.CharField(max_length=200, null=True, blank=True, choices=Action,default='Pending')
-    therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=True, blank=True, related_name='appointments')
+    therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=False, blank=False, related_name='appointments')
 
     class Meta:
         unique_together = ('date', 'time', 'patient', 'therapist')

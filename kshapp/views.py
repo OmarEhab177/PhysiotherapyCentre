@@ -137,6 +137,63 @@ def new_disability(request):
 
 
 @login_required(login_url = 'accounts/login')
+def new_appointment(request):
+    appoint_form = AppointForm(request.POST)
+    if appoint_form.is_valid():
+        appoint_form.save()
+        messages.add_message(request, messages.INFO, 'Disability created successfully.')
+    else:
+        messages.add_message(request, messages.INFO, 'Error while creating Disability.')
+    return HttpResponseRedirect('appointments')
+
+
+@login_required(login_url = 'accounts/login')
+def appointments(request):
+    appointments = Appointment.objects.all()
+    appoint_form = AppointForm()
+    context = {
+        'appointments': appointments,
+        'appoint_form': appoint_form,
+    }
+    template = 'pages/appointments.html'
+    return render(request, template, context)
+
+def appointment_detail(request, pk):
+    appointment = get_object_or_404(Appointment, id=pk)
+    context = {
+        'appointment': appointment
+    }
+    template = 'pages/appointment.html'
+    return render(request, template, context)
+    
+
+
+def edit_appoint(request):
+    if request.method == "POST":
+        appointID = request.POST.get('appointID')
+        appoint = get_object_or_404(Appointment, id=appointID)
+        edit_appoint = AppointForm(request.POST, instance=appoint)
+        if edit_appoint.is_valid():
+            edit_appoint.save()
+            messages.add_message(request, messages.INFO, 'Appointment updated successfully.')
+            return HttpResponseRedirect('appointments')
+        else:
+            messages.add_message(request, messages.INFO, 'Invalid data!')
+            return HttpResponseRedirect('appointments')
+    else:
+        appointID = request.GET.get('appointID')
+        appoint = get_object_or_404(Appointment, id=appointID)
+        edit_appoint_form = AppointForm(instance=appoint)
+
+        return HttpResponse(
+            json.dumps({
+                'status': '1',
+                'data' : json.dumps(edit_appoint_form.as_p())
+            })
+        )
+ 
+
+@login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def section(request) :
     add_sec = SectionForm(request.POST)

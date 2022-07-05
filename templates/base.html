@@ -118,6 +118,13 @@
                 $('#modalConfirmPopup').modal('show');
             }
         </script>
+        <script>
+            {% if messages %}
+                {% for message in messages %}
+                    alertPopup('', '{{message}}')
+                {% endfor %}
+            {% endif %}
+        </script>
         {% block afterload %}
 
         {% endblock afterload %}

@@ -41,3 +41,5 @@ class AppointForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = '__all__'
+        exclude = ('created', )
+    
