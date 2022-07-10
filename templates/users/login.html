@@ -1,7 +1,62 @@
-<h1>Login</h1>
-<p>TODO: create login page</p>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Login - SB Admin</title>
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="white-bg login-container">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-6 login-img">
+                                <img class="w-100" src="{% static 'images/undraw_secure_login_pdn4.svg' %}" />
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="card  border-0  mt-5">
+                                    <div class="card-header no-border white-bg"><h3 class="text-lift font-weight-light my-4">Login</h3></div>
+                                    <div class="card-body no-border">
+                                        <form method = "POST">
+                                            <div class=" bg-light form-floating mb-3">
+                                              {% csrf_token %}
+                                              {{ form.as_p }}
+                                              <button class = "btn btn-primary" type="submit">Login</button>
+                                                
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="no-border white-bg card-footer text-center py-3">
+                                        <div class="small"><a href="signup">Need an account? Sign up!</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Kuwait Society for the Hondicapped 2022</div>
+                            <div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
