@@ -8,13 +8,92 @@
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active"></li>
             </ol>
-            <div class="innercontent">
-                <p >TODO: create appointment detail here</p>
-                <h1>{{appointment}}</h1>
+        <div class="innercontent">
+            <div class="alert alert-info">
+                    <strong>Info!</strong> appointment details here .
             </div>
+
+                
+            <div class="card mb-4">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <strong>Date</strong>
+                          </div>
+                          <div class="col-sm-9">
+                            <p class="text-muted mb-0"> {{appointment.date}}</p>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <strong>Time</strong>
+                          </div>
+                          <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{appointment.time}}</p>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                              <strong>Patient Name</strong>
+                            </div>
+                            <div class="col-sm-9">
+                              <p class="text-muted mb-0">{{appointment.patient}}</p>
+                            </div>
+                          </div>
+                          <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <strong>Therapist Name</strong>
+                          </div>
+                          <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{appointment.therapist}}</p>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <strong>Status</strong>
+                          </div>
+                          <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{appointment.status}}</p>
+                          </div>
+                        </div>
+                      
+                      </div>
+                      
+                    </div>
+                    <div class="">
+                        <div class="alert alert-warning">
+                            <strong>Note!</strong> all Patient Note here .
+                          </div>
+                        
+                            <div class="card mb-4">
+                              <div class="card-body">
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <strong>Date</strong>
+                                  </div>
+                                  <div class="col-sm-9">
+                                    <p class="text-muted mb-0"> {{appointment.note}}</p>
+                                  </div>
+                                </div>
+                    </div>
+                                
+    
+                  </div>
+            
+                          
+                 
+                
             </div>
+            
            
         </div>
+
+
+        
     </main>
 </div>
 {% endblock %}
