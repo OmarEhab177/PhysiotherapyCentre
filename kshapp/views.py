@@ -56,9 +56,9 @@ def new_patient(request):
         email = request.POST.get('email'),
         adress = request.POST.get('adress'),
         phone = request.POST.get('phone'),
-        photo = request.POST.get('photo'),
-        ID_photo = request.POST.get('ID_photo'),
-        uplode = request.POST.get('uplode'),
+        photo = request.FILES.get('photo'),
+        ID_photo = request.FILES.get('ID_photo'),
+        uplode = request.FILES.get('uplode'),
         gender = request.POST.get('gender'),
         nationality = request.POST.get('nationality'),
         parents_contact = request.POST.get('parents_contact'),
@@ -223,7 +223,6 @@ def new_section(request) :
 
 def edit_section(request):
     if request.method == "POST":
-        print('POST')
         secID = request.POST.get('secID')
         sec = get_object_or_404(Section, id=secID)
         edit_sec = SectionForm(request.POST, instance=sec)
@@ -235,7 +234,6 @@ def edit_section(request):
             messages.add_message(request, messages.INFO, 'Invalid data!')
             return HttpResponseRedirect('sections')
     else:
-        print('GET')
         secID = request.GET.get('secID')
         sec = get_object_or_404(Section, id=secID)
         edit_sec_form = SectionForm(instance=sec)
@@ -244,5 +242,53 @@ def edit_section(request):
             json.dumps({
                 'status': '1',
                 'data' : json.dumps(edit_sec_form.as_p())
+            })
+        )
+
+def new_therapist(request):
+    Therapist_form = TherapistForm(request.POST, request.FILES)
+    if Therapist_form.is_valid():
+        Therapist_form.save()
+        messages.add_message(request, messages.INFO, 'Therapist created successfully.')
+    else:
+        messages.add_message(request, messages.INFO, 'Error while creating Therapist.')
+    return HttpResponseRedirect('therapists')
+
+def therapists(request):
+    therapists = Therapist.objects.all()
+    therapist_form = TherapistForm()
+    context = {
+        'therapists':therapists,
+        'therapist_form':therapist_form,
+    }
+    template = 'pages/therapists.html'
+    return render(request, template, context)
+
+class TherapistView(DetailView):
+    template_name = 'pages/therapist.html'
+    model = Therapist
+
+
+def edit_therapist(request):
+    if request.method == "POST":
+        therapistID = request.POST.get('therapistID')
+        therapist = get_object_or_404(Therapist, id=therapistID)
+        edit_therapist = TherapistForm(request.POST, request.FILES, instance=therapist)
+        if edit_therapist.is_valid():
+            edit_therapist.save()
+            messages.add_message(request, messages.INFO, 'Therapist updated successfully.')
+            return HttpResponseRedirect('therapists')
+        else:
+            messages.add_message(request, messages.INFO, 'Invalid data!')
+            return HttpResponseRedirect('therapists')
+    else:
+        therapistID = request.GET.get('therapistID')
+        therapist = get_object_or_404(Therapist, id=therapistID)
+        edit_therapist_form = TherapistForm(instance=therapist)
+
+        return HttpResponse(
+            json.dumps({
+                'status': '1',
+                'data' : json.dumps(edit_therapist_form.as_p())
             })
         )

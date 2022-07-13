@@ -95,13 +95,12 @@
                         <td>{{patient.name}}</td>
                         <td>{{patient.Date_Of_Birth}}</td>
                         <td>{{patient.phone}}</td>
-                        <td class="text-center row">
+                        <td class="text-center">
                             <form id="csrf_patient_form">
                                 {% csrf_token %}
                             </form>
                             <button type="button" onclick="editPatient({{patient.id}})" class="btn btn-outline-success mx-2 col"><i class="fas fa-edit"></i> Edit</button>
-                            <!-- <button type="button" onclick="deletePatient({{patient.id}})" class="btn btn-danger mx-2 col"><i class="fas fa-trash-alt"></i> Delete</button> -->
-                            <button type="button" onclick="confirmPopup('Delete Patient', 'Are you sure you want to delete {{patient.name}}', 'danger', 'Delete', 'Cancel', 'deletePatient({{patient.id}})')" class="btn btn-danger mx-2 col"><i class="fas fa-trash-alt"></i> Delete</button>
+                            <!-- <button type="button" onclick="confirmPopup('Delete Patient', 'Are you sure you want to delete {{patient.name}}', 'danger', 'Delete', 'Cancel', 'deletePatient({{patient.id}})')" class="btn btn-danger mx-2 col"><i class="fas fa-trash-alt"></i> Delete</button> -->
                         </td>
                     </tr>
                     {% endfor %}
@@ -121,59 +120,59 @@
                             {% csrf_token %}
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">Name</label>
+                                    <label class="m-2">Name</label>
                                     {{ patient_form.name }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">patient_type</label>
+                                    <label class="m-2">patient_type</label>
                                     {{ patient_form.patient_type }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">civil_Id</label>
+                                    <label class="m-2">civil_Id</label>
                                     {{ patient_form.civil_Id }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">type_disability</label>
+                                    <label class="m-2">type_disability</label>
                                     {{ patient_form.type_disability }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">Date_Of_Birth</label>
+                                    <label class="m-2">Date_Of_Birth</label>
                                     {{ patient_form.Date_Of_Birth }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">email</label>
+                                    <label class="m-2">email</label>
                                     {{ patient_form.email }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">adress</label>
+                                    <label class="m-2">adress</label>
                                     {{ patient_form.adress }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">phone</label>
+                                    <label class="m-2">phone</label>
                                     {{ patient_form.phone }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">photo</label>
-                                    {{ patient_form.photo. }}
+                                    <label class="m-2">photo</label>
+                                    {{ patient_form.photo }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">ID_photo</label>
+                                    <label class="m-2">ID_photo</label>
                                     {{ patient_form.ID_photo }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">uplode</label>
+                                    <label class="m-2">uplode</label>
                                     {{ patient_form.uplode }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">gender</label>
+                                    <label class="m-2">gender</label>
                                     {{ patient_form.gender }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">nationality</label>
+                                    <label class="m-2">nationality</label>
                                     {{ patient_form.nationality }}
                                 </div>
                                 <div class="form-group">
-                                    <label class="m-2" for="email1">parents_contact</label>
+                                    <label class="m-2">parents_contact</label>
                                     {{ patient_form.parents_contact }}
                                 </div>
                             </div>
@@ -323,6 +322,11 @@
                         $('#modalEditPatient textarea').each(function(){
                             $(this).addClass('form-control')
                         }),
+                        $("input[type='checkbox']").each(function(){
+                            $(this).removeClass('form-control')
+                            $(this).addClass('form-check-input')
+                        }),
+                        $('#modalEditPatient a').css('display', 'block'),
                         $('#modalEditPatient #id_Date_Of_Birth').attr('type', 'date'),
                         $('#editPatientForm input[name="patientID"]').val(patientID)
                     )
