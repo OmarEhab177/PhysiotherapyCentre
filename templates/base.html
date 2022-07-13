@@ -87,7 +87,7 @@
         <script src="{% static 'js/datatables-simple-demo.js' %}"></script> -->
         <script>
             // Alert Popup function
-            async function alertPopup(title, message, context = 'info', buttonText = 'Close', callback = '') {
+            async function alertPopup(title, message, context = 'info', buttonText = 'Close', callback = 'window.location.reload();') {
                 $('#modalAlertPopup #title').html(title);
                 $('#modalAlertPopup #message').html(message);
                 $('#modalAlertPopup #button').attr('class', 'btn btn-' + context);

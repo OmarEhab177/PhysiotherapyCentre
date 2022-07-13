@@ -22,6 +22,10 @@ urlpatterns = [
     path('appointments', views.appointments, name='appointments'),
     path('appointment/<int:pk>', views.appointment_detail, name='appointment-detail'),
     path('edit-appoint', views.edit_appoint, name='edit-appoint'),
+    path('therapists', views.therapists, name='therapists'),
+    path('therapist-detail/<int:pk>', views.TherapistView.as_view(), name='therapist-detail'),
+    path('edit-therapist', views.edit_therapist, name='edit-therapist'),
+    path('new-therapist', views.new_therapist, name='new-therapist'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

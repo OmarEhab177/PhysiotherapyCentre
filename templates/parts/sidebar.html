@@ -5,6 +5,9 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav ">
+                    {% if request.session.group == 'therapist' %}
+                      <!-- do something -->
+                    {% else %}
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'kshapp:home'%}"> <i
@@ -27,6 +30,8 @@
                                 class="fa-solid fa-person-chalkboard"></i> &nbsp; Therapists</a>
                         </li>
                     </ul>
+                    {% endif %}
+
                 </div>
             </div>
             <div class="sb-sidenav-footer">

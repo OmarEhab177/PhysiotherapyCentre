@@ -15,51 +15,53 @@
                 </div>
             </div> 
         
-            <h1>Sections</h1>
+            <h1>Therapists</h1>
             <div class="d-flex flex-row-reverse m-2 p-2">
-                <button type="button" id="add_sec_btn" class="btn btn-success m-1" data-togle="modal"
-                    data-target="#addSection">New Section</button>
+                <button type="button" id="add_therapist_btn" class="btn btn-success m-1" data-togle="modal"
+                    data-target="#addTherapist">Add Therapist</button>
             </div>
             <table class="table table-striped" >
                 <thead>
                     <tr>
-                        <th scope="col">Section service</th>
-                        <th scope="col">Main Section</th>
-                        <th scope="col">Note</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for sec in sections %}
+                    {% for therapist in therapists %}
                     <tr>
-                        <!-- TODO: redirect user to appointment page -->
-                        <th scope="row"><a type="button" href="{% url 'kshapp:section-detail' sec.id%}" class="text-info text-decoration-none">{{sec.section_service}}</a></th>
-                        <td>{{sec.main_section}}</td>
-                        <td>{{sec.note}}</td>
+                        <!-- TODO: redirect user to therapist page -->
+                        <th scope="row"><a type="button" href="{% url 'kshapp:therapist-detail' therapist.id%}" class="text-info text-decoration-none">{{therapist.id}}</a></th>
+                        <td>{{therapist.name}}</td>
+                        <td>{{therapist.email}}</td>
+                        <td>{{therapist.phone}}</td>
                         <td class="text-center">
-                            <form id="csrf_sec_form" class="d-none">
+                            <form id="csrf_therapist_form" class="d-none">
                                 {% csrf_token %}
                             </form>
-                            <button type="button" data-secID="{{sec.id}}"  class="btn btn-outline-success mx-2 col edit_sec_btn"><i class="fas fa-edit"></i> Edit</button>
+                            <button type="button" data-therapistID="{{therapist.id}}"  class="btn btn-outline-success mx-2 col edit_therapist_btn"><i class="fas fa-edit"></i> Edit</button>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
 
-            <div class="modal fade" id="addSection" >
+            <div class="modal fade" id="addTherapist" >
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header border-bottom-0">
-                            <h5 class="modal-title">Create Section</h5>
+                            <h5 class="modal-title">Create Therapist</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form method="POST" action="{% url 'kshapp:new-section' %}"  enctype="multipart/form-data">
+                        <form method="POST" action="{% url 'kshapp:new-therapist' %}"  enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="modal-body">
-                            {{ sec_form.as_p }}
+                            {{ therapist_form.as_p }}
                             </div>
                             <div class="modal-footer border-top-0 d-flex justify-content-center">
                                 <button type="submit" class="btn btn-success">Submit</button>
@@ -69,19 +71,19 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalEditSec" >
+            <div class="modal fade" id="modalEditTherapist" >
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header border-bottom-0">
-                            <h5 class="modal-title">Edit Section</h5>
+                            <h5 class="modal-title">Edit Therapist</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form id="editSectionForm" method="POST" action="{% url 'kshapp:edit-section' %}"  enctype="multipart/form-data">
+                        <form id="editTherapistForm" method="POST" action="{% url 'kshapp:edit-therapist' %}"  enctype="multipart/form-data">
                             {% csrf_token %}
-                            <input type="hidden" id="secID" name="secID" value="">
-                            <div id='edit_sec_body' class="modal-body">
+                            <input type="hidden" id="therapistID" name="therapistID" value="">
+                            <div id='edit_therapist_body' class="modal-body">
 
                             </div>
                             <div class="modal-footer border-top-0 d-flex justify-content-center">
@@ -91,6 +93,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
 </div>
@@ -98,39 +101,52 @@
 
 {% block afterload %}
 <script>
-$('#add_sec_btn').click(function(){
-    $('#addSection').modal('show');
+$('#add_therapist_btn').click(function(){
+    $('#addTherapist').modal('show');
     $('#id_date').attr('type', 'date');
     $('input').each(function(){
         $(this).addClass('form-control')
     })
+    $("input[type='checkbox']").each(function(){
+        $(this).removeClass('form-control')
+        $(this).addClass('form-check-input')
+    })
+
     $('select').each(function(){
         $(this).addClass('form-control')
     })
 })
 
-function editSection(patientID){
-    token = $("#csrf_appointment_form").find('input[name=csrfmiddlewaretoken]').val()
+function editTherapist(patientID){
+    token = $("#csrf_therapist_form").find('input[name=csrfmiddlewaretoken]').val()
     $.get({
-        'url': '{% url "kshapp:edit-section" %}',
+        'url': '{% url "kshapp:edit-therapist" %}',
         'data': {
             'csrfmiddlewaretoken': token,
-            'secID': secID
+            'therapistID': therapistID
         },
         'success': function (response) {
-            $('#edit_sec_body p').remove()
+            $('#edit_therapist_body p').remove()
             response = JSON.parse(response);
             if (response.status == '1') {
-                $('#modalEditSec').modal('show');
-                $.when($('#edit_sec_body').append(JSON.parse(response.data))).then(
-                    $('#modalEditSec input').each(function(){
+                $('#modalEditTherapist').modal('show');
+                $.when($('#edit_therapist_body').append(JSON.parse(response.data))).then(
+                    $('#modalEditTherapist input').each(function(){
                         $(this).addClass('form-control')
                     }),
-                    $('#modalEditSec select').each(function(){
+                    $('#modalEditTherapist select').each(function(){
                         $(this).addClass('form-control')
                     }),
-
-                    $('#editSectionForm input[name="secID"]').val(secID)
+                    $('#modalEditTherapist textarea').each(function(){
+                        $(this).addClass('form-control')
+                    }),
+                    $("input[type='checkbox']").each(function(){
+                        $(this).removeClass('form-control')
+                        $(this).addClass('form-check-input')
+                    }),
+                    $('#modalEditTherapist a').css('display', 'block'),
+                    $('#modalEditTherapist #id_date').attr('type', 'date'),
+                    $('#editTherapistForm input[name="therapistID"]').val(therapistID)
                 )
 
             } else {
@@ -143,9 +159,9 @@ function editSection(patientID){
     })
 }
 
-$('.edit_sec_btn').on('click', function(){
-    secID = $(this).attr('data-secID')
-    editSection(secID)
+$('.edit_therapist_btn').on('click', function(){
+    therapistID = $(this).attr('data-therapistID')
+    editTherapist(therapistID)
 })
 
 </script>
