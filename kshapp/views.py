@@ -13,10 +13,11 @@ from .directors import allowed_users
 # @allowed_users(allowed_roles=['admin'])
 def index(request) :
     context = {
-    #     'pro':appointment_models.objects.all(),
-    #     'allapointment':appointment_models.objects.all().count,
-    #     'allpending':appointment_models.objects.filter(status="pending").count,
-    #     'alldone':appointment_models.objects.filter(status="Done").count,
+        'pro':Appointment.objects.all(),
+        'allapointment':Appointment.objects.filter(date__day='14').count,
+        'allpending':Appointment.objects.filter(action="Pending").count,
+        'alldone':Appointment.objects.filter(action="Done").count,
+        'allabsent':Appointment.objects.filter(status="Absent").count
         
         }
     return render(request, 'pages/index.html',context)  
