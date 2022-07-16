@@ -43,7 +43,7 @@ def login_view(request):
             login(request, user)
             if user.groups.filter(name = 'therapist').exists():
                 request.session['group'] = 'therapist'
-                return HttpResponseRedirect('/therapists')
+                return HttpResponseRedirect('/therapist-appointmets')
             else:
                 request.session['group'] = user.groups.first()
         else:

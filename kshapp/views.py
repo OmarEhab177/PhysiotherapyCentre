@@ -292,3 +292,20 @@ def edit_therapist(request):
                 'data' : json.dumps(edit_therapist_form.as_p())
             })
         )
+
+
+#################################################
+################# therapist profile #############
+
+def therapist_appointments(request):
+    print(request.user.therapist.appointments.all())
+
+    therapist = request.user.therapist
+    appointments = request.user.therapist.appointments.all()
+    context = {
+        'therapist':therapist,
+        'appointments':appointments,
+    }
+
+    template = 'pages/therapist-home.html'
+    return render(request, template, context)

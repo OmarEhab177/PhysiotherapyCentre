@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="layoutSidenav_content">
+    <main>
+        <div class="main-content container-fluid px-4">
+            <h1 class="mt-4">Welcom 
+                {% if request.user.name %}{{request.user.name}}{% else %}{{request.user}}{%endif%}
+            </h1>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card text-center bg-primary text-white mb-4">
+                      
+                    </div>
+                </div>
+            </div> 
+        
+            <h1>Therapist</h1>
+            <!-- <div class="d-flex flex-row-reverse m-2 p-2">
+                <button type="button" id="add_sec_btn" class="btn btn-success m-1" data-togle="modal"
+                    data-target="#addSection">New Section</button>
+            </div> -->
+
+            <table class="table table-striped" >
+                <thead>
+                    <tr>
+                        <th scope="col">Section service</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in appointments %}
+                    <tr>
+                        <!-- TODO: redirect user to appointment page -->
+                        <th scope="row"><a type="button" href="{% url 'kshapp:appointment-detail' app.id%}" class="text-info text-decoration-none">{{app.id}}</a></th>
+                        <td>{{app.patient}}</td>
+                        <td>{{app.time}}</td>
+                        <td>{{app.date}}</td>
+                        <td>{{app.status}}</td>
+                        <td>{{app.action}}</td>
+                        <td class="text-center">
+                            <form id="csrf_app_form" class="d-none">
+                                {% csrf_token %}
+                            </form>
+                            <button type="button" data-appID="{{app.id}}"  class="btn btn-outline-success mx-2 col edit_app_btn"><i class="fas fa-edit"></i> Action</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            
+        </div>
+    </main>
+</div>
+{% endblock %}
+{% block afterload %}
+{% endblock afterload %}
