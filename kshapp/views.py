@@ -7,17 +7,20 @@ from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .directors import allowed_users
+from django.utils import timezone
+from django.utils.timezone import datetime
 
 
 @login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
 def index(request) :
     context = {
-        'pro':Appointment.objects.all(),
-        'allapointment':Appointment.objects.filter(date__day='14').count,
+        'pro':Appointment.objects.order_by('-date'),
+        'allapointment':Appointment.objects.order_by('-date').count,
         'allpending':Appointment.objects.filter(action="Pending").count,
-        'alldone':Appointment.objects.filter(action="Done").count,
-        'allabsent':Appointment.objects.filter(status="Absent").count
+        'alldone':Appointment.objects.filter(status="Attend").count,
+        'allabsent':Appointment.objects.filter(status="Absent").count,
+        'Compensate':Appointment.objects.filter(status="Compensate").count,
         
         }
     return render(request, 'pages/index.html',context)  
@@ -145,13 +148,13 @@ def new_appointment(request):
         appoint_form.save()
         messages.add_message(request, messages.INFO, 'Appointment created successfully.')
     else:
-        messages.add_message(request, messages.INFO, 'Error while creating Appointment.')
+        messages.add_message(request, messages.INFO, 'Error while creating ,Or already exist Appointmentis .')
     return HttpResponseRedirect('appointments')
 
 
 @login_required(login_url = 'accounts/login')
 def appointments(request):
-    appointments = Appointment.objects.all()
+    appointments = Appointment.objects.order_by('-date')
     appoint_form = AppointForm()
     context = {
         'appointments': appointments,
@@ -293,3 +296,11 @@ def edit_therapist(request):
                 'data' : json.dumps(edit_therapist_form.as_p())
             })
         )
+
+def reports(request):
+
+    context = {
+   
+    }
+    template = 'pages/reports.html'
+    return render(request, template, context)
