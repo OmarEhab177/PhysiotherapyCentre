@@ -3,7 +3,7 @@
 
 <nav class="sb-topnav navbar navbar-expand c-top-nav">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="{% url 'kshapp:home' %}">
+    <a class="navbar-brand ps-3" href="{% if request.session.group == 'therapist' %}  {% url 'kshapp:therapist-appointments' %} {% else %} {%url 'kshapp:home'%} {% endif %}">
         <img class="logo" src="{% static 'images/logo.jpg' %}" />
     </a>
     <!-- Sidebar Toggle -->
