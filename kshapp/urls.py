@@ -26,6 +26,7 @@ urlpatterns = [
     path('therapist-detail/<int:pk>', views.TherapistView.as_view(), name='therapist-detail'),
     path('edit-therapist', views.edit_therapist, name='edit-therapist'),
     path('new-therapist', views.new_therapist, name='new-therapist'),
+    path('reports', views.reports, name='reports'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
