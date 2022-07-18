@@ -29,6 +29,7 @@ urlpatterns = [
     path('therapist-appointments', views.therapist_appointments, name='therapist-appointments'),
     path('edit-therapist-appointment', views.edit_therapist_appointment, name='edit-therapist-appointment'),
     path('therapist-all-appointments', views.therapist_all_appointments, name='therapist-all-appointments'),
+    path('reports', views.reports, name='reports'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

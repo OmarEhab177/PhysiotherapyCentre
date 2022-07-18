@@ -16,10 +16,12 @@ from django.contrib.auth.models import Group
 @allowed_users(allowed_roles=['admin'])
 def index(request) :
     context = {
-    #     'pro':appointment_models.objects.all(),
-    #     'allapointment':appointment_models.objects.all().count,
-    #     'allpending':appointment_models.objects.filter(status="pending").count,
-    #     'alldone':appointment_models.objects.filter(status="Done").count,
+        'pro':Appointment.objects.order_by('-date'),
+        'allapointment':Appointment.objects.order_by('-date').count,
+        'allpending':Appointment.objects.filter(action="Pending").count,
+        'alldone':Appointment.objects.filter(status="Attend").count,
+        'allabsent':Appointment.objects.filter(status="Absent").count,
+        'Compensate':Appointment.objects.filter(status="Compensate").count,
         
         }
     return render(request, 'pages/index.html',context)  
@@ -154,14 +156,14 @@ def new_appointment(request):
         appoint_form.save()
         messages.add_message(request, messages.INFO, 'Appointment created successfully.')
     else:
-        messages.add_message(request, messages.INFO, 'Error while creating Appointment.')
+        messages.add_message(request, messages.INFO, 'Error while creating ,Or already exist Appointmentis .')
     return HttpResponseRedirect('appointments')
 
 
 @login_required(login_url = 'accounts/login')
 @allowed_users(allowed_roles=['admin'])
 def appointments(request):
-    appointments = Appointment.objects.all()
+    appointments = Appointment.objects.order_by('-date')
     appoint_form = AppointForm()
     context = {
         'appointments': appointments,

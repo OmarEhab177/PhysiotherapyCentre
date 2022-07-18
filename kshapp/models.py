@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.timezone import datetime
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -80,8 +81,8 @@ class Appointment(models.Model):
     STATUS = (
         ('Attend', 'Attend'),
         ('Absent', 'Absent'),
-        ('Excuse of Child', 'Excuse of Child'),
-        ('Excuse of therapist', 'Excuse of therapist'),
+        ('Compensate', 'Compensate'),
+
     )
 
     Time = (
