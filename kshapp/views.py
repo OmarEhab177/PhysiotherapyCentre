@@ -7,12 +7,13 @@ from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .directors import allowed_users
-from django.utils import timezone
-from django.utils.timezone import datetime
+from datetime import datetime
+from django.utils.decorators import method_decorator
+from django.contrib.auth.models import Group
 
 
 @login_required(login_url = 'accounts/login')
-# @allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin'])
 def index(request) :
     context = {
         'pro':Appointment.objects.order_by('-date'),
@@ -27,7 +28,7 @@ def index(request) :
 
 
 @login_required(login_url = 'accounts/login')
-# @allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin'])
 def patients(request):
     patients = Patient.objects.all()
     patient_form = PatientForm()
@@ -45,7 +46,7 @@ def patients(request):
 
 
 @login_required(login_url = 'accounts/login')
-# @allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin'])
 def new_patient(request):
     p_type = request.POST.get('patient_type')
     t_disability = request.POST.get('type_disability')
@@ -71,6 +72,8 @@ def new_patient(request):
     return HttpResponseRedirect('patients')
 
 
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def view_patient(request, pk):
     patient = get_object_or_404(Patient, id=pk)
     context = {
@@ -80,6 +83,8 @@ def view_patient(request, pk):
     return render(request, template, context)
 
 
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def delete_patient(request):
     patientID = request.POST['patientID']
     patient = get_object_or_404(Patient, id=patientID)
@@ -93,6 +98,8 @@ def delete_patient(request):
     )
 
 
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def edit_patient(request):
     if request.method == "POST":
         patientID = request.POST.get('patientID')
@@ -118,7 +125,7 @@ def edit_patient(request):
         )
 
 @login_required(login_url = 'accounts/login')
-# @allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin'])
 def new_patient_type(request):
     p_type = PatientTypeForm(request.POST)
     if p_type.is_valid():
@@ -130,7 +137,7 @@ def new_patient_type(request):
 
 
 @login_required(login_url = 'accounts/login')
-# @allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin'])
 def new_disability(request):
     dis_form = DisabilityForm(request.POST)
     if dis_form.is_valid():
@@ -142,6 +149,7 @@ def new_disability(request):
 
 
 @login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def new_appointment(request):
     appoint_form = AppointForm(request.POST)
     if appoint_form.is_valid():
@@ -153,6 +161,7 @@ def new_appointment(request):
 
 
 @login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def appointments(request):
     appointments = Appointment.objects.order_by('-date')
     appoint_form = AppointForm()
@@ -163,6 +172,9 @@ def appointments(request):
     template = 'pages/appointments.html'
     return render(request, template, context)
 
+
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin', 'therapist'])
 def appointment_detail(request, pk):
     appointment = get_object_or_404(Appointment, id=pk)
     context = {
@@ -172,7 +184,8 @@ def appointment_detail(request, pk):
     return render(request, template, context)
     
 
-
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def edit_appoint(request):
     if request.method == "POST":
         appointID = request.POST.get('appointID')
@@ -197,7 +210,8 @@ def edit_appoint(request):
             })
         )
 
-
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def sections(request):
     sections = Section.objects.all()
     sec_form = SectionForm()
@@ -208,13 +222,15 @@ def sections(request):
     template = 'pages/sections.html'
     return render(request, template, context)
 
-
+@method_decorator(login_required(login_url = 'accounts/login'), name='dispatch')
+@method_decorator(allowed_users(allowed_roles=['admin']), name='dispatch')
 class SectionView(DetailView):
     template_name = 'pages/section.html'
     model = Section
 
 
 @login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def new_section(request) :
     add_sec = SectionForm(request.POST)
     if add_sec.is_valid():
@@ -224,7 +240,8 @@ def new_section(request) :
         messages.add_message(request, messages.INFO, 'Error while creating Sections.')
     return HttpResponseRedirect('sections')
 
-
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def edit_section(request):
     if request.method == "POST":
         secID = request.POST.get('secID')
@@ -249,15 +266,23 @@ def edit_section(request):
             })
         )
 
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def new_therapist(request):
+    therapist_group = Group.objects.get(name='therapist') 
     Therapist_form = TherapistForm(request.POST, request.FILES)
     if Therapist_form.is_valid():
+        therapist_data = Therapist_form.cleaned_data
         Therapist_form.save()
+        therapist = Therapist.objects.get(email = therapist_data['email'])
+        therapist_group.user_set.add(therapist)
         messages.add_message(request, messages.INFO, 'Therapist created successfully.')
     else:
         messages.add_message(request, messages.INFO, 'Error while creating Therapist.')
     return HttpResponseRedirect('therapists')
 
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def therapists(request):
     therapists = Therapist.objects.all()
     therapist_form = TherapistForm()
@@ -268,11 +293,15 @@ def therapists(request):
     template = 'pages/therapists.html'
     return render(request, template, context)
 
+@method_decorator(login_required(login_url = 'accounts/login'), name='dispatch')
+@method_decorator(allowed_users(allowed_roles=['admin']), name='dispatch')
 class TherapistView(DetailView):
     template_name = 'pages/therapist.html'
     model = Therapist
 
 
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def edit_therapist(request):
     if request.method == "POST":
         therapistID = request.POST.get('therapistID')
@@ -297,10 +326,62 @@ def edit_therapist(request):
             })
         )
 
-def reports(request):
 
+#################################################
+################# therapist profile #############
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['therapist'])
+def therapist_appointments(request):
+    today = datetime.now().strftime('%Y-%m-%d')
+    therapist = request.user.therapist
+
+    appointments = request.user.therapist.appointments.filter(date=today).all()
     context = {
-   
+        'therapist':therapist,
+        'appointments':appointments,
     }
-    template = 'pages/reports.html'
+
+    template = 'pages/therapist-home.html'
+    return render(request, template, context)
+
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['therapist'])
+def edit_therapist_appointment(request):
+    if request.method == "POST":
+        try:
+            appID = request.POST.get('appID')
+            appoint = get_object_or_404(Appointment, id=appID)
+            status = request.POST.get('status')
+            note = request.POST.get('note')
+            appoint.status = status
+            appoint.note = note
+            appoint.action = 'Done'
+            appoint.save()
+            messages.add_message(request, messages.INFO, 'Appointment updated successfully.')
+        except:
+            messages.add_message(request, messages.INFO, 'Invalid data!')
+        return HttpResponseRedirect('/therapist-appointments')
+    else:
+        appID = request.GET.get('appID')
+        appoint = get_object_or_404(Appointment, id=appID)
+        edit_appoint_form = AppointForm(instance=appoint)
+
+        return HttpResponse(
+            json.dumps({
+                'status': '1',
+                'data' : json.dumps(edit_appoint_form.as_p())
+            })
+        )
+
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['therapist'])
+def therapist_all_appointments(request):
+    therapist = request.user.therapist
+    appointments = request.user.therapist.appointments.all()
+    context = {
+        'therapist':therapist,
+        'appointments':appointments,
+    }
+
+    template = 'pages/therapist-all-appointments.html'
     return render(request, template, context)
