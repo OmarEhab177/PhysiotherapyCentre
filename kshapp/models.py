@@ -41,7 +41,7 @@ class Patient(models.Model):
     phone = models.CharField(max_length=50, null=False, blank=False)
     photo = models.ImageField(upload_to='images/patients', null=True, blank=True)
     ID_photo = models.ImageField(upload_to='images/patients', null=True, blank=True)
-    uplode = models.ImageField(upload_to='images/patients', null=True, blank=True)
+    uplode = models.FileField(upload_to='images/patients', null=True, blank=True)
     gender = models.CharField(max_length=200, null=True, blank=True, choices=GENDER)
     nationality = models.CharField(max_length=200, null=False, blank=False)
     parents_contact = models.CharField(max_length=200, null=False, blank=False)

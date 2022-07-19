@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .directors import allowed_users
 from django.utils import timezone
 from django.utils.timezone import datetime
-
+from .filters import OrderFilter
 
 @login_required(login_url = 'accounts/login')
 # @allowed_users(allowed_roles=['admin'])
@@ -159,6 +159,8 @@ def appointments(request):
     context = {
         'appointments': appointments,
         'appoint_form': appoint_form,
+        
+
     }
     template = 'pages/appointments.html'
     return render(request, template, context)
@@ -298,9 +300,13 @@ def edit_therapist(request):
         )
 
 def reports(request):
-
+    appointments = Appointment.objects.all()
+    myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
+    order = myFilter.qs
     context = {
-   
+        'appointments': appointments,
+        'myFilter':myFilter
+
     }
     template = 'pages/reports.html'
-    return render(request, template, context)
+    return render(request, template,context,)

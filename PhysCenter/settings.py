@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'kshapp.apps.KshappConfig',
     'users.apps.UsersConfig',
+    'django_filters',
+    
 ]
 
 AUTH_USER_MODEL = 'users.User'

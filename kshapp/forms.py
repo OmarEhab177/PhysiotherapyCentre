@@ -42,6 +42,7 @@ class AppointForm(forms.ModelForm):
         model = Appointment
         fields = '__all__'
         exclude = ('created', )
+        
     
 class TherapistForm(forms.ModelForm):
     class Meta:
