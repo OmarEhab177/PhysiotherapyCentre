@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="layoutSidenav_content">
+    <main>
+        <div class="main-content container-fluid px-4">
+            <h1 class="mt-4">Welcom 
+                {% if request.user.name %}{{request.user.name}}{% else %}{{request.user}}{%endif%}
+            </h1>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card text-center bg-primary text-white mb-4">
+                      
+                    </div>
+                </div>
+            </div> 
+
+            <h1>Therapist</h1>
+
+            <table class="table table-striped" >
+                <thead>
+                    <tr>
+                        <th scope="col">Section service</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in appointments %}
+                    <tr>
+                        <!-- TODO: redirect user to appointment page -->
+                        <th scope="row"><a type="button" href="{% url 'kshapp:appointment-detail' app.id%}" class="text-info text-decoration-none">{{app.id}}</a></th>
+                        <td>{{app.patient}}</td>
+                        <td>{{app.time}}</td>
+                        <td>{{app.date}}</td>
+                        <td>{{app.status}}</td>
+                        <td>{{app.action}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="modal fade" id="modalEditTherapistAppoint" >
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title">Edit Appointment</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="editTherapistAppointForm" method="POST" action="{% url 'kshapp:edit-therapist-appointment' %}"  enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" id="appointID" name="appID" value="">
+                        <div id='edit_app_body' class="modal-body">
+
+                        </div>
+                        <div class="modal-footer border-top-0 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

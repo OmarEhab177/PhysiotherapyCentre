@@ -6,11 +6,20 @@
             <div class="sb-sidenav-menu">
                 <div class="nav ">
                     {% if request.session.group == 'therapist' %}
-                      <!-- do something -->
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'kshapp:therapist-appointments'%}">
+                                <i class="fa fa-calendar"></i> &nbsp; Today Appointments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="{% url 'kshapp:therapist-all-appointments'%}"> 
+                                <i class="fa-solid fa-users"></i> &nbsp; All appointments</a>
+                        </li>
+                    </ul>
                     {% else %}
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'kshapp:home'%}"> <i
+                            <a class="nav-link" aria-current="page" href="{% url 'kshapp:home'%}"> <i
                                     class="fa-solid fa-gauge"></i> &nbsp; Dashboard</a>
                         </li>
                         <li class="nav-item">
@@ -26,8 +35,8 @@
                                 &nbsp; Appointments</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href=""><i
-                                class="fa-solid fa-person-chalkboard"></i> &nbsp; Therapists</a>
+                            <a class="nav-link" href="{% url 'kshapp:therapists'%}"><i
+                                    class="fa-solid fa-person-chalkboard"></i> &nbsp; Therapists</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'kshapp:reports'%}"><i class="ml-2 fab fa-elementor"> </i>
@@ -41,7 +50,7 @@
             </div>
             <div class="sb-sidenav-footer">
                 <div class="small">Logged in as:</div>
-                User Name
+                {{request.user}}
             </div>
         </nav>
     </div>
