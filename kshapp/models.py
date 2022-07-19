@@ -106,7 +106,7 @@ class Appointment(models.Model):
     therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=False, blank=False, related_name='appointments')
 
     class Meta:
-        unique_together = ('date', 'time', 'therapist')
+        unique_together = (('date', 'time', 'therapist'), ('date', 'time', 'patient'))
 
     def __str__(self):
         return str(self.patient)

@@ -44,8 +44,6 @@ def login_view(request):
             if user.groups.filter(name = 'therapist').exists():
                 request.session['group'] = 'therapist'
                 return HttpResponseRedirect('/therapist-appointments')
-            else:
-                request.session['group'] = user.groups.first()
         else:
             messages.add_message(request, messages.INFO, 'Please enter a correct email and password. Note that, May be your account is disabled please contact us')
         return HttpResponseRedirect('/')
