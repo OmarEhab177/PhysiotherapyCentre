@@ -7,6 +7,9 @@ from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .directors import allowed_users
+from django.utils import timezone
+from django.utils.timezone import datetime
+from .filters import OrderFilter
 from datetime import datetime
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import Group
@@ -168,6 +171,8 @@ def appointments(request):
     context = {
         'appointments': appointments,
         'appoint_form': appoint_form,
+        
+
     }
     template = 'pages/appointments.html'
     return render(request, template, context)
@@ -326,6 +331,17 @@ def edit_therapist(request):
             })
         )
 
+def reports(request):
+    appointments = Appointment.objects.all()
+    myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
+    order = myFilter.qs
+    context = {
+        'appointments': appointments,
+        'myFilter':myFilter
+
+    }
+    template = 'pages/reports.html'
+    return render(request, template,context,)
 
 #################################################
 ################# therapist profile #############
