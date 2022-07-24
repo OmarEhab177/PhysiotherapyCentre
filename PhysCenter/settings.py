@@ -17,7 +17,7 @@ DEBUG = str(os.environ.get('DEBUG')) == '1'
 
 ALLOWED_HOSTS = []
 if not DEBUG:
-    ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOSTS').split(',')]
+    ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOSTS')]
 
 
 # Application definition
@@ -100,7 +100,7 @@ if POSTGRES_READY:
             "USER": POSTGRES_USER,
             "PASSWORD": POSTGRES_PASSWORD,
             "HOST": POSTGRES_HOST,
-            "PORT": POSTGRES_PORT,
+            "PORT": '',
         }
     }
 
