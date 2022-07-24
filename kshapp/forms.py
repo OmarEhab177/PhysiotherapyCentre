@@ -1,4 +1,5 @@
-from django import forms 
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
 
@@ -44,7 +45,7 @@ class AppointForm(forms.ModelForm):
         exclude = ('created', )
         
     
-class TherapistForm(forms.ModelForm):
+class TherapistForm(UserCreationForm):
     class Meta:
         model = Therapist
-        fields = ('name', 'email', 'phone', 'password', 'is_active', 'adress', 'sections', 'avtar')
+        fields = ('name', 'email', 'phone', 'is_active', 'adress', 'sections', 'avtar')

@@ -1,8 +1,10 @@
 /.env
+/.venv
 *.sqlite
 __pycache__/
 *.pyc
 /env
+/venv
 .env
 db.sqlite3
 media/

@@ -13,6 +13,9 @@ from .filters import OrderFilter
 from datetime import datetime
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import Group
+from users.forms import SignUpForm
+from django.contrib.auth import login, authenticate
+
 
 
 @login_required(login_url = 'accounts/login')
@@ -271,6 +274,7 @@ def edit_section(request):
             })
         )
 
+
 @login_required(login_url = 'accounts/login')
 @allowed_users(allowed_roles=['admin'])
 def new_therapist(request):
@@ -285,6 +289,25 @@ def new_therapist(request):
     else:
         messages.add_message(request, messages.INFO, 'Error while creating Therapist.')
     return HttpResponseRedirect('therapists')
+
+
+# @login_required(login_url = 'accounts/login')
+# @allowed_users(allowed_roles=['admin'])
+# def new_therapist(request):
+#     therapist_group = Group.objects.get(name='therapist') 
+#     if request.method == 'POST':
+#         form = SignUpForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             user = form.save()
+#             raw_password = form.cleaned_data.get('password')
+#             user = authenticate(request, email=user.email, password=raw_password)
+#             therapist_group.user_set.add(user)
+#             if user is not None:
+#                messages.add_message(request, messages.INFO, 'Therapist created successfully.')
+#             else:
+#                 messages.add_message(request, messages.INFO, 'Error while creating Therapist.')
+#             return HttpResponseRedirect('therapists')
+
 
 @login_required(login_url = 'accounts/login')
 @allowed_users(allowed_roles=['admin'])
@@ -331,6 +354,9 @@ def edit_therapist(request):
             })
         )
 
+
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
 def reports(request):
     appointments = Appointment.objects.all()
     myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
