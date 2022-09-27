@@ -11,8 +11,6 @@
     integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
 
-<form method="GET">
-    {% csrf_token %}
     <script>
         {% if messages %}
         {% for message in messages %}
@@ -43,7 +41,7 @@
     <br>
     <br>
     <form>
-       
+        {% csrf_token %}
         <div id="logo1" class="container" class="jumbotron text-center" class=" bg-light form-floating mb-3">
             <input class="form-control" name="username" placeholder="username" />
         </div>
