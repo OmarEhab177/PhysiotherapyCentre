@@ -33,8 +33,8 @@ def index(request) :
     return render(request, 'pages/index.html',context)  
 
 
-@login_required(login_url = 'accounts/login')
-@allowed_users(allowed_roles=['admin'])
+# @login_required(login_url = 'accounts/login')
+# @allowed_users(allowed_roles=['admin'])
 def patients(request):
     patients = Patient.objects.all()
     patient_form = PatientForm()
