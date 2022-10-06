@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'kshapp.apps.KshappConfig',
     'users.apps.UsersConfig',
     'django_filters',
+    'widget_tweaks',
     
 ]
 

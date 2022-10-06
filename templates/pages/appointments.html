@@ -4,7 +4,7 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="main-content container-fluid px-4">
-            <h1 class="mt-4">Welcom 
+            <h1 class="mt-4">Welcome
                 {% if request.user.name %}{{request.user.name}}{% else %}{{request.user}}{%endif%}
             </h1>
             <div class="row">
@@ -20,8 +20,11 @@
                 <button type="button" id="add_appointment_btn" class="btn btn-success m-1" data-togle="modal"
                     data-target="#addAppointment">Add Appointment</button>
             </div>
+            <br>
+            <h2>    </h2>
+            <input type="text" class="table-filter" data-table="order-table" placeholder="Appointments Search .." />
             
-            <table class="table table-striped" >
+            <table class="order-table table" class="table table-striped" >
                 <thead>
                     <tr>
                         <th scope="col">Date</th>
@@ -157,5 +160,54 @@ $('.edit_appointment_btn').on('click', function(){
     editAppointment(appointID)
 })
 
+</script>
+
+<script>
+    (function() {
+        'use strict';
+    
+    var TableFilter = (function() {
+     var Arr = Array.prototype;
+            var input;
+      
+            function onInputEvent(e) {
+                input = e.target;
+                var table1 = document.getElementsByClassName(input.getAttribute('data-table'));
+                Arr.forEach.call(table1, function(table) {
+                    Arr.forEach.call(table.tBodies, function(tbody) {
+                        Arr.forEach.call(tbody.rows, filter);
+                    });
+                });
+            }
+    
+            function filter(row) {
+                var text = row.textContent.toLowerCase();
+           //console.log(text);
+          var val = input.value.toLowerCase();
+          //console.log(val);
+                row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+            }
+    
+            return {
+                init: function() {
+                    var inputs = document.getElementsByClassName('table-filter');
+                    Arr.forEach.call(inputs, function(input) {
+                        input.oninput = onInputEvent;
+                    });
+                }
+            };
+     
+        })();
+    
+      /*console.log(document.readyState);
+        document.addEventListener('readystatechange', function() {
+            if (document.readyState === 'complete') {
+          console.log(document.readyState);
+                TableFilter.init();
+            }
+        }); */
+      
+     TableFilter.init(); 
+    })();
 </script>
 {% endblock afterload %}

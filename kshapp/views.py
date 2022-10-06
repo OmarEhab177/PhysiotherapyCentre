@@ -13,22 +13,22 @@ from .filters import OrderFilter
 from datetime import datetime
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import Group
-from users.forms import SignUpForm
-from django.contrib.auth import login, authenticate
-
+import csv
 
 
 @login_required(login_url = 'accounts/login')
 @allowed_users(allowed_roles=['admin'])
 def index(request) :
+    today = datetime.now().strftime('%Y-%m-%d')
+
     context = {
         'pro':Appointment.objects.order_by('-date'),
-        'allapointment':Appointment.objects.order_by('-date').count,
-        'allpending':Appointment.objects.filter(action="Pending").count,
-        'alldone':Appointment.objects.filter(status="Attend").count,
-        'allabsent':Appointment.objects.filter(status="Absent").count,
-        'Compensate':Appointment.objects.filter(status="Compensate").count,
-        
+        'allapointment':Appointment.objects.filter(date=today).count(),
+        'allpending':Appointment.objects.filter(action="Pending",date=today).count,
+        'alldone':Appointment.objects.filter(status="Attend",date=today).count,
+        'allabsent':Appointment.objects.filter(status="Absent",date=today).count,
+        'Compensate':Appointment.objects.filter(status="Compensate",date=today).count,
+        'male':Patient.objects.filter(gender="Male").count,
         }
     return render(request, 'pages/index.html',context)  
 
@@ -291,24 +291,6 @@ def new_therapist(request):
     return HttpResponseRedirect('therapists')
 
 
-# @login_required(login_url = 'accounts/login')
-# @allowed_users(allowed_roles=['admin'])
-# def new_therapist(request):
-#     therapist_group = Group.objects.get(name='therapist') 
-#     if request.method == 'POST':
-#         form = SignUpForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             user = form.save()
-#             raw_password = form.cleaned_data.get('password')
-#             user = authenticate(request, email=user.email, password=raw_password)
-#             therapist_group.user_set.add(user)
-#             if user is not None:
-#                messages.add_message(request, messages.INFO, 'Therapist created successfully.')
-#             else:
-#                 messages.add_message(request, messages.INFO, 'Error while creating Therapist.')
-#             return HttpResponseRedirect('therapists')
-
-
 @login_required(login_url = 'accounts/login')
 @allowed_users(allowed_roles=['admin'])
 def therapists(request):
@@ -354,20 +336,6 @@ def edit_therapist(request):
             })
         )
 
-
-@login_required(login_url = 'accounts/login')
-@allowed_users(allowed_roles=['admin'])
-def reports(request):
-    appointments = Appointment.objects.all()
-    myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
-    order = myFilter.qs
-    context = {
-        'appointments': appointments,
-        'myFilter':myFilter
-
-    }
-    template = 'pages/reports.html'
-    return render(request, template,context,)
 
 #################################################
 ################# therapist profile #############
@@ -427,3 +395,36 @@ def therapist_all_appointments(request):
 
     template = 'pages/therapist-all-appointments.html'
     return render(request, template, context)
+
+
+# all Reports Views 
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
+def reports(request):
+    #appointments = Appointment.objects.all()
+    myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
+    appointments = myFilter.qs
+    context = {
+        'appointments': appointments,
+        'myFilter':myFilter
+
+    }
+    template = 'pages/reports.html'
+    return render(request, template,context,)
+
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
+def patient_reports(request):
+    context = {
+
+    }
+
+    template = 'pages/patient_reports.html'
+    return render(request, template,context,)
+
+@login_required(login_url = 'accounts/login')
+@allowed_users(allowed_roles=['admin'])
+def note(request):
+
+    template = 'pages/note.html'
+    return render(request, template)

@@ -29,7 +29,20 @@ class Patient(models.Model):
         ('Male', 'Male'),
         ('Female', 'Female'),
     )
+    NATION = (
+        ('Kuwaiti', 'Kuwaiti'),
+        ('Egyption', 'Egyption'),
+        ('Iraqi', 'Iraqi'),
+        ('Jordanian', 'Jordanian'),
+        ('Non-Kuwaiti', 'Non-Kuwaiti'),
+        ('Saudi', 'Saudi'),
+        ('Syrian', 'Syrian'),
+        ('Yemeni', 'Yemeni'),
+        ('Indian', 'Indian'),
+        ('Bangladesh', 'Bangladesh'),
 
+
+    )
     created = models.DateTimeField(default=timezone.now)
     name = models.CharField(max_length=250, null=False, blank=False)
     patient_type = models.ForeignKey(PatientType, on_delete=models.CASCADE, null=False, blank=False)
@@ -43,7 +56,7 @@ class Patient(models.Model):
     ID_photo = models.ImageField(upload_to='images/patients', null=True, blank=True)
     uplode = models.FileField(upload_to='images/patients', null=True, blank=True)
     gender = models.CharField(max_length=200, null=True, blank=True, choices=GENDER)
-    nationality = models.CharField(max_length=200, null=False, blank=False)
+    nationality = models.CharField(max_length=200, null=False, blank=False,choices=NATION)
     parents_contact = models.CharField(max_length=200, null=False, blank=False)
 
     def __str__(self):
@@ -86,13 +99,15 @@ class Appointment(models.Model):
     )
 
     Time = (
-        ("8", "8"),
-        ("9", "9"),
-        ("10", "10"),
-        ("11", "11"),
-        ("12", "12"),
-        ("1", "1"),
-        ("2", "2"),
+        ("8:00", "8:00"),
+        ("8:45", "8:45"),
+        ("9:30", "9:30"),
+        ("10:15", "10:15"),
+        ("11:00", "11:00"),
+        ("11:45", "11:45"),
+        ("12:30", "12:30"),
+        ("01:15", "01:15"),
+
     )
 
     created = models.DateTimeField(default=timezone.now)
@@ -106,7 +121,7 @@ class Appointment(models.Model):
     therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE, null=False, blank=False, related_name='appointments')
 
     class Meta:
-        unique_together = (('date', 'time', 'therapist'), ('date', 'time', 'patient'))
+        unique_together = ('date', 'time', 'therapist')
 
     def __str__(self):
         return str(self.patient)
