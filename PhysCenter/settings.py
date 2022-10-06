@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'kshapp.apps.KshappConfig',
     'users.apps.UsersConfig',
     'django_filters',
+    'widget_tweaks',
     
 ]
 
@@ -137,3 +138,7 @@ MESSAGE_TAGS = {
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
 MEDIA_URL = '/media/'
+
+
+#relic
+

@@ -1,7 +1,7 @@
 
 
 {% extends 'base.html' %}
-
+{% load widget_tweaks %}
 {% block content %}
 <div id="layoutSidenav_content">
     <main>
@@ -22,15 +22,37 @@
               <br>
            
               <!-- End Fillters buttons -->
-              <form method = "GET">
+              <form method = "get"class="form-inline justify-content-center">
+                <div class="col-10">
+                  {{ filter.form.somefield.label_tag }}
+                  {% render_field filter.form.somefield class="form-select form-select-sm" %}
+              </div>
                 <div class="form-group">
-                {{myFilter.form}}
+                  <div  style="background-color:#fff8dc;">
+                  <div style=" background-color:#f0e68c;
+                    width: 100%;
+                    padding: 12px 20px;
+                    margin: 20px 0;
+                    display: inline-block;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                   " >
+                  {{myFilter.form.as_p}}
+                  </div>
                 <button type="submit" class="btn btn-primary">Search</button>
+                </div>
               </form>
+                <div  style=" margin: 20px 0; ">
+              <button style = "background-color:#32cd32;" onclick="ExportToExcel('xlsx')">Export to excel</button>
+              <p>
+                <input type="button" value="Print Table" onclick="myApp.printTable()" />
+            </p>
+               </div>
             <div class="container">
                 <h2>Reports</h2>
                <br>           
-                <table class="table table-bordered">
+                <table class="table table-bordered" id="tbl_exporttable_to_xls">
                   <thead>
                     <tr>
                       <th>Date</th>
@@ -54,6 +76,7 @@
                     {% endfor %}
                 </tbody>
                 </table>
+                
               </div>
         
         </div>
@@ -63,4 +86,34 @@
 
 
 
+<script>
+
+    function ExportToExcel(type, fn, dl) {
+        var elt = document.getElementById('tbl_exporttable_to_xls');
+        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+        return dl ?
+            XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+            XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+    }
+
+</script>
+<script>
+  var myApp = new function () {
+      this.printTable = function () {
+          var tab = document.getElementById('tbl_exporttable_to_xls');
+
+          var style = "<style>";
+              style = style + "table {width: 100%;font: 17px Calibri;}";
+              style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+              style = style + "padding: 2px 3px;text-align: center;}";
+              style = style + "</style>";
+
+          var win = window.open('', '', 'height=700,width=700');
+          win.document.write(style);          //  add the style.
+          win.document.write(tab.outerHTML);
+          win.document.close();
+          win.print();
+      }
+  }
+</script>
 {% endblock %}

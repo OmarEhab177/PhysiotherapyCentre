@@ -8,23 +8,11 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="main-content container-fluid px-4">
-            <h1 class="mt-4">Dashboard</h1>
+            <h1 class="mt-4">Welcome {{request.user.name}}</h1>
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>
             <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <div class="card text-center bg-warning text-white mb-4">
-                        <div class="card-body">
-                            <i class="icon fa-solid fas fa-user-alt-slash"></i>
-                            
-                            <h2 class="mycard-title">{{allabsent}}</h2>
-                        </div>
-                        <div class="card-footer">
-                            <h4 class="small text-white stretched-link">All Absent</h4>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-info text-center text-white mb-4">
                         <div class="card-body">
@@ -33,7 +21,18 @@
                             <h2 class="mycard-title">{{allapointment}}</h2>
                         </div>
                         <div class="card-footer">
-                            <h4 class="small text-white">Appointment</h4>
+                            <h4 class="small text-white">Total Appointments</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card  text-center bg-danger text-white mb-4">
+                        <div class="card-body">
+                            <i class="spinner-grow text-light"></i>
+                            <h2 class="mycard-title">{{allpending}}</h2>
+                        </div>
+                        <div class="card-footer">
+                            <h4 class="small text-white">Pending Appointments</h4>
                         </div>
                     </div>
                 </div>
@@ -44,14 +43,26 @@
                             <h2 class="mycard-title">{{alldone}}</h2>
                         </div>
                         <div class="card-footer">
-                            <h4 class="small text-white" >Attend Appointment</h4>
+                            <h4 class="small text-white" > Appointments Attend</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card text-center bg-warning text-white mb-4">
+                        <div class="card-body">
+                            <i class="icon fa-solid fas fa-user-alt-slash"></i>
+                            
+                            <h2 class="mycard-title">{{allabsent}}</h2>
+                        </div>
+                        <div class="card-footer">
+                            <h4 class="small text-white stretched-link">Cancelled</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-secondary text-center text-white mb-4">
                         <div class="card-body">
-                            <i class="icon fa-solid fa-calendar-check"></i>
+                            <i class="icon fa-solid fa-hourglass-clock"></i>
                             <h2 class="mycard-title">{{Compensate}}</h2>
                         </div>
                         <div class="card-footer">
@@ -59,55 +70,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card  text-center bg-danger text-white mb-4">
-                        <div class="card-body">
-                            <i style="font-size: 1.3rem;" class="fas fa-user-clock text-large"></i>
-                            <h2 class="mycard-title">{{allpending}}</h2>
-                        </div>
-                        <div class="card-footer">
-                            <h4 class="small text-white">Pending Appointment</h4>
-                        </div>
-                    </div>
-                </div>
             </div>
-             
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    DataTable Example
-                </div>
-                <div class="card-body">
-                    <table id="datatablesSimple">
-                        <thead>
-                            <tr>
-                                <th>date</th>
-                                <th>time</th>
-                                <th>patient</th>
-                                <th>therapist</th>
-                                <th>Service</th>
-                                <th>Status</th>
-                                <th>Update</th>
-                            </tr>
-                        </thead>
-                      
-                        <tbody>
-                            {% for appoin in pro %}
-                            <tr>
-                                <td>{{appoin.date}}</td>
-                                <td>{{appoin.time}}</td>
-                                <td>{{appoin.patient_name}}</td>
-                                <td>{{appoin.therapist_name}}</td>
-                                <td>{{appoin.action}}</td>
-                                <td>{{appoin.status}}</td>
-                                <td><a class="dropdown-item" href="#">Edit</a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-
-                    </table>
-                </div>
-            </div>
+            
+           
         </div>
 
         

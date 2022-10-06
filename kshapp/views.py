@@ -13,18 +13,23 @@ from .filters import OrderFilter
 from datetime import datetime
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import Group
+import csv
 
 
 @login_required(login_url = 'accounts/login')
 @allowed_users(allowed_roles=['admin'])
 def index(request) :
+    today = datetime.now().strftime('%Y-%m-%d')
+
     context = {
         'pro':Appointment.objects.order_by('-date'),
-        'allapointment':Appointment.objects.order_by('-date').count,
-        'allpending':Appointment.objects.filter(action="Pending").count,
-        'alldone':Appointment.objects.filter(status="Attend").count,
-        'allabsent':Appointment.objects.filter(status="Absent").count,
-        'Compensate':Appointment.objects.filter(status="Compensate").count,
+        'allapointment':Appointment.objects.filter(date=today).count(),
+        'allpending':Appointment.objects.filter(action="Pending",date=today).count,
+        'alldone':Appointment.objects.filter(status="Attend",date=today).count,
+        'allabsent':Appointment.objects.filter(status="Absent",date=today).count,
+        'Compensate':Appointment.objects.filter(status="Compensate",date=today).count,
+        'male':Patient.objects.filter(gender="Male").count,
+         
         
         }
     return render(request, 'pages/index.html',context)  
@@ -43,6 +48,7 @@ def patients(request):
         'patient_form': patient_form,
         'p_type_form': patient_type_form,
         'disability_form':disability_form
+        
     }
     template = 'pages/patients.html'
     return render(request, template, context)
@@ -331,10 +337,12 @@ def edit_therapist(request):
             })
         )
 
+# all Reports Views 
+
 def reports(request):
-    appointments = Appointment.objects.all()
+    #appointments = Appointment.objects.all()
     myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
-    order = myFilter.qs
+    appointments = myFilter.qs
     context = {
         'appointments': appointments,
         'myFilter':myFilter
@@ -343,6 +351,13 @@ def reports(request):
     template = 'pages/reports.html'
     return render(request, template,context,)
 
+def patient_reports(request):
+    context = {
+
+    }
+
+    template = 'pages/patient_reports.html'
+    return render(request, template,context,)
 #################################################
 ################# therapist profile #############
 @login_required(login_url = 'accounts/login')
@@ -401,3 +416,9 @@ def therapist_all_appointments(request):
 
     template = 'pages/therapist-all-appointments.html'
     return render(request, template, context)
+
+
+def note(request):
+
+    template = 'pages/note.html'
+    return render(request, template)
