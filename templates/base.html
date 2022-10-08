@@ -15,7 +15,7 @@
         <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     </head>
 
-    <body class="sb-nav-fixed sb-sidenav-toggled">
+    <body class="sb-nav-fixed">
         {% include 'parts/nav.html' %}
         {% include 'parts/sidebar.html' %}
         <!-- TODO: make it to pop up as a flashed message -->
@@ -126,6 +126,14 @@
                 {% endfor %}
             {% endif %}
         </script>
+        <script>
+            $(document).ready(function() {
+                if ('{{request.user}}' == 'AnonymousUser'){
+                    $('#sidenavAccordion').hide()
+                }
+            })
+        </script>
+        
         {% block afterload %}
 
         {% endblock afterload %}
