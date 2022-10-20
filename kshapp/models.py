@@ -40,6 +40,12 @@ class Patient(models.Model):
         ('Yemeni', 'Yemeni'),
         ('Indian', 'Indian'),
         ('Bangladesh', 'Bangladesh'),
+        ('Eritrean', 'Eritrean'),
+        ('Lebanese', 'Lebanese'),
+        ('Irani', 'Irani'),
+        ('Somali', 'Somali'),
+        ('Other', 'Other'),
+        
 
 
     )
