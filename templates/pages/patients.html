@@ -124,7 +124,7 @@
                     {% endif %}
                     {% for i in patients.paginator.page_range %}
                         {% if patients.number == i %}
-                            <li class="active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
                         {% else %}
                             <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
                         {% endif %}
