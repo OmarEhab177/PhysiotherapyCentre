@@ -1,19 +1,22 @@
+import csv
 import json
-from django.shortcuts import get_object_or_404, render
-from django.http import  HttpResponseRedirect, HttpResponse
-from django.views.generic.detail import DetailView
-from .models import *
-from .forms import *
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .directors import allowed_users
-from django.utils import timezone
-from django.utils.timezone import datetime
-from .filters import OrderFilter
-from datetime import datetime
-from django.utils.decorators import method_decorator
 from django.contrib.auth.models import Group
-import csv
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.utils.timezone import datetime
+from django.views.generic.detail import DetailView
+
+from .directors import allowed_users
+from .filters import OrderFilter
+from .forms import *
+from .models import *
 
 
 @login_required(login_url = 'accounts/login')
@@ -40,6 +43,14 @@ def patients(request):
     patient_form = PatientForm()
     patient_type_form = PatientTypeForm()
     disability_form = DisabilityForm()
+    patients_pagination = Paginator(patients, 10)
+    page = request.GET.get('page', 1)
+    try:
+        patients = patients_pagination.page(page)
+    except PageNotAnInteger:
+        patients = patients_pagination.page(1)
+    except EmptyPage:
+        patients = patients_pagination.page(patients_pagination.num_pages)
 
     context = {
         'patients': patients,
@@ -171,6 +182,15 @@ def new_appointment(request):
 def appointments(request):
     appointments = Appointment.objects.order_by('-date')
     appoint_form = AppointForm()
+    appointments_pagination = Paginator(appointments, 10)
+    page = request.GET.get('page', 1)
+    try:
+        appointments = appointments_pagination.page(page)
+    except PageNotAnInteger:
+        appointments = appointments_pagination.page(1)
+    except EmptyPage:
+        appointments = appointments_pagination.page(appointments_pagination.num_pages)
+
     context = {
         'appointments': appointments,
         'appoint_form': appoint_form,
@@ -296,6 +316,14 @@ def new_therapist(request):
 def therapists(request):
     therapists = Therapist.objects.all()
     therapist_form = TherapistForm()
+    therapists_pagination = Paginator(therapists, 1)
+    page = request.GET.get('page', 1)
+    try:
+        therapists = therapists_pagination.page(page)
+    except PageNotAnInteger:
+        therapists = therapists_pagination.page(1)
+    except EmptyPage:
+        therapists = therapists_pagination.page(therapists_pagination.num_pages)
     context = {
         'therapists':therapists,
         'therapist_form':therapist_form,
