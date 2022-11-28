@@ -316,7 +316,7 @@ def new_therapist(request):
 def therapists(request):
     therapists = Therapist.objects.all()
     therapist_form = TherapistForm()
-    therapists_pagination = Paginator(therapists, 1)
+    therapists_pagination = Paginator(therapists, 10)
     page = request.GET.get('page', 1)
     try:
         therapists = therapists_pagination.page(page)
@@ -432,6 +432,14 @@ def reports(request):
     #appointments = Appointment.objects.all()
     myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
     appointments = myFilter.qs
+    appointments_pagination = Paginator(appointments, 10)
+    page = request.GET.get('page', 1)
+    try:
+        appointments = appointments_pagination.page(page)
+    except PageNotAnInteger:
+        appointments = appointments_pagination.page(1)
+    except EmptyPage:
+        appointments = appointments_pagination.page(appointments_pagination.num_pages)
     context = {
         'appointments': appointments,
         'myFilter':myFilter
