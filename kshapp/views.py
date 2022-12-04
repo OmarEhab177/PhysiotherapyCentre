@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.timezone import datetime
 from django.views.generic.detail import DetailView
+from django.db.models import Q
 
 from .directors import allowed_users
 from .filters import OrderFilter
@@ -40,10 +41,13 @@ def index(request) :
 @allowed_users(allowed_roles=['admin'])
 def patients(request):
     patients = Patient.objects.all()
+    if request.GET.get('q'):
+        q = request.GET.get('q')
+        patients = patients.filter(Q(name__icontains=q) | Q(civil_Id__icontains=q) | Q(phone__icontains=q) | Q(parents_contact__icontains=q) )
     patient_form = PatientForm()
     patient_type_form = PatientTypeForm()
     disability_form = DisabilityForm()
-    patients_pagination = Paginator(patients, 10)
+    patients_pagination = Paginator(patients, 1)
     page = request.GET.get('page', 1)
     try:
         patients = patients_pagination.page(page)
@@ -181,6 +185,9 @@ def new_appointment(request):
 @allowed_users(allowed_roles=['admin'])
 def appointments(request):
     appointments = Appointment.objects.order_by('-date')
+    if request.GET.get('q'):
+        q = request.GET.get('q')
+        appointments = appointments.filter(Q(patient__name__icontains=q) | Q(therapist__name__icontains=q) | Q(note__icontains=q))
     appoint_form = AppointForm()
     appointments_pagination = Paginator(appointments, 10)
     page = request.GET.get('page', 1)

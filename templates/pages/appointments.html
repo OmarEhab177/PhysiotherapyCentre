@@ -22,8 +22,10 @@
             </div>
             <br>
             <h2>    </h2>
-            <input type="text" class="table-filter" data-table="order-table" placeholder="Appointments Search .." />
-            
+            <form class="row" action="{% url 'kshapp:appointments' %}" method="GET">
+                <input type="text" name="q" value="{{request.GET.q}}" class="col-4" style="width: 40%;" data-table="order-table" placeholder="Appointments Search .." />
+                <button type="submit" class="btn btn-outline-info m-1 col-1" >search</button>
+            </form>
             <table class="order-table table" class="table table-striped" >
                 <thead>
                     <tr>
