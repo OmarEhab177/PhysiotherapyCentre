@@ -47,7 +47,7 @@ def patients(request):
     patient_form = PatientForm()
     patient_type_form = PatientTypeForm()
     disability_form = DisabilityForm()
-    patients_pagination = Paginator(patients, 1)
+    patients_pagination = Paginator(patients, 50)
     page = request.GET.get('page', 1)
     try:
         patients = patients_pagination.page(page)
@@ -189,7 +189,7 @@ def appointments(request):
         q = request.GET.get('q')
         appointments = appointments.filter(Q(patient__name__icontains=q) | Q(therapist__name__icontains=q) | Q(note__icontains=q))
     appoint_form = AppointForm()
-    appointments_pagination = Paginator(appointments, 10)
+    appointments_pagination = Paginator(appointments, 50)
     page = request.GET.get('page', 1)
     try:
         appointments = appointments_pagination.page(page)
@@ -323,7 +323,7 @@ def new_therapist(request):
 def therapists(request):
     therapists = Therapist.objects.all()
     therapist_form = TherapistForm()
-    therapists_pagination = Paginator(therapists, 10)
+    therapists_pagination = Paginator(therapists, 50)
     page = request.GET.get('page', 1)
     try:
         therapists = therapists_pagination.page(page)
@@ -439,7 +439,7 @@ def reports(request):
     #appointments = Appointment.objects.all()
     myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
     appointments = myFilter.qs
-    appointments_pagination = Paginator(appointments, 10)
+    appointments_pagination = Paginator(appointments, 50)
     page = request.GET.get('page', 1)
     try:
         appointments = appointments_pagination.page(page)
