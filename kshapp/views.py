@@ -82,8 +82,8 @@ def new_patient(request):
         email = request.POST.get('email'),
         adress = request.POST.get('adress'),
         phone = request.POST.get('phone'),
-        photo = request.FILES.get('photo'),
-        ID_photo = request.FILES.get('ID_photo'),
+        photo = request.FILES.get('photo', ''),
+        ID_photo = request.FILES.get('ID_photo', ''),
         uplode = request.FILES.get('uplode'),
         gender = request.POST.get('gender'),
         nationality = request.POST.get('nationality'),
@@ -439,14 +439,14 @@ def reports(request):
     #appointments = Appointment.objects.all()
     myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
     appointments = myFilter.qs
-    appointments_pagination = Paginator(appointments, 50)
-    page = request.GET.get('page', 1)
-    try:
-        appointments = appointments_pagination.page(page)
-    except PageNotAnInteger:
-        appointments = appointments_pagination.page(1)
-    except EmptyPage:
-        appointments = appointments_pagination.page(appointments_pagination.num_pages)
+    # appointments_pagination = Paginator(appointments, 50)
+    # page = request.GET.get('page', 1)
+    # try:
+    #     appointments = appointments_pagination.page(page)
+    # except PageNotAnInteger:
+    #     appointments = appointments_pagination.page(1)
+    # except EmptyPage:
+    #     appointments = appointments_pagination.page(appointments_pagination.num_pages)
     context = {
         'appointments': appointments,
         'myFilter':myFilter
