@@ -101,6 +101,7 @@ class Appointment(models.Model):
         ('Attend', 'Attend'),
         ('Absent', 'Absent'),
         ('Compensate', 'Compensate'),
+        ('Discharged', 'Discharged'),
 
     )
 
