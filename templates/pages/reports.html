@@ -88,6 +88,8 @@
 
 
 
+
+
 <script>
 
     function ExportToExcel(type, fn, dl) {
@@ -117,5 +119,13 @@
           win.print();
       }
   }
+</script>
+{% endblock %}
+{% block afterload %}
+<script>
+  $(document).ready(function() {
+    $('#id_start_date').attr('type', 'date');
+    $('#id_end_date').attr('type', 'date');
+  })
 </script>
 {% endblock %}
