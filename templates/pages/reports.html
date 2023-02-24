@@ -22,7 +22,8 @@
               <br>
            
               <!-- End Fillters buttons -->
-              <form method = "get"class="form-inline justify-content-center">
+              <form method = "POST" action="{% url 'kshapp:reports' %}" class="form-inline justify-content-center">
+                {% csrf_token %}
                 <div class="col-10">
                   {{ filter.form.somefield.label_tag }}
                   {% render_field filter.form.somefield class="form-select form-select-sm" %}
@@ -49,6 +50,7 @@
                 <input type="button" value="Print Table" onclick="myApp.printTable()" />
             </p>
                </div>
+              {% if appointments %} 
             <div class="container">
                 <h2>Reports</h2>
                <br>           
@@ -77,6 +79,7 @@
                 </tbody>
                 </table>
               </div>
+              {% endif %}
         
         </div>
           

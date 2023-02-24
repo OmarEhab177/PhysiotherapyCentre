@@ -436,24 +436,29 @@ def therapist_all_appointments(request):
 @login_required(login_url = 'accounts/login')
 @allowed_users(allowed_roles=['admin'])
 def reports(request):
-    #appointments = Appointment.objects.all()
-    myFilter = OrderFilter(request.GET, queryset=Appointment.objects.all())
-    appointments = myFilter.qs
-    # appointments_pagination = Paginator(appointments, 50)
-    # page = request.GET.get('page', 1)
-    # try:
-    #     appointments = appointments_pagination.page(page)
-    # except PageNotAnInteger:
-    #     appointments = appointments_pagination.page(1)
-    # except EmptyPage:
-    #     appointments = appointments_pagination.page(appointments_pagination.num_pages)
-    context = {
-        'appointments': appointments,
-        'myFilter':myFilter
-
-    }
+    if request.method == "GET":
+        #appointments = Appointment.objects.all()
+        myFilter = OrderFilter()
+        # appointments_pagination = Paginator(appointments, 50)
+        # page = request.GET.get('page', 1)
+        # try:
+        #     appointments = appointments_pagination.page(page)
+        # except PageNotAnInteger:
+        #     appointments = appointments_pagination.page(1)
+        # except EmptyPage:
+        #     appointments = appointments_pagination.page(appointments_pagination.num_pages)
+        context = {
+            'myFilter':myFilter
+        }
+    else:
+        myFilter = OrderFilter(request.POST, queryset=Appointment.objects.all())
+        appointments = myFilter.qs
+        context = {
+            'myFilter':myFilter,
+            'appointments': appointments
+        }
     template = 'pages/reports.html'
-    return render(request, template,context,)
+    return render(request, template,context)
 
 @login_required(login_url = 'accounts/login')
 @allowed_users(allowed_roles=['admin'])
